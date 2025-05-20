@@ -4,7 +4,8 @@
     "autoload": {
         "files": [
             "vendor/docopt/docopt/src/docopt.php",
-            "src/Parser.php"
+            "src/Parser.php",
+            "src/Differ.php"
         ],
         "psr-4": {
             "Hexlet\\Code\\": "src/",

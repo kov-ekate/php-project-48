@@ -17,7 +17,7 @@ Options:
 
 DOC;
 
-require_once __DIR__ . '/../vendor/docopt/docopt/src/docopt.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $args = \Docopt::handle($doc, array('version'=>'Naval Fate 2.0'));
 foreach ($args as $k=>$v)
