@@ -5,7 +5,7 @@ $doc = <<<DOC
 Generate diff.
 
 Usage:
-  gendiff <filePath1> <filePath2>
+  gendiff <pathToFile1> <pathToFile2>
   gendiff (-h|--help)
   gendiff (-v|--version)
   gendiff [--format <fmt>] <firstFile> <secondFile>
@@ -17,9 +17,7 @@ Options:
 
 DOC;
 
-require_once __DIR__ . '/vendor/docopt/docopt/src/docopt.php';
-
-use Docopt\Docopt;
+require_once __DIR__ . '/../vendor/docopt/docopt/src/docopt.php';
 
 $args = \Docopt::handle($doc, array('version'=>'Naval Fate 2.0'));
 foreach ($args as $k=>$v)

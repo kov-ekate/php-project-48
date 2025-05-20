@@ -3,10 +3,12 @@
     "type": "project",
     "autoload": {
         "files": [
-            "src/docopt.php"
+            "vendor/docopt/docopt/src/docopt.php",
+            "src/Parser.php"
         ],
         "psr-4": {
-            "Hexlet\\Code\\": "src/"
+            "Hexlet\\Code\\": "src/",
+            "Differ\\Differ\\": "src/"
         }
     },
     "authors": [
@@ -18,5 +20,8 @@
     "minimum-stability": "stable",
     "require": {
         "docopt/docopt": "^1.0"
-    }
+    },
+    "bin": [
+        "bin/gendiff"
+    ]
 }
