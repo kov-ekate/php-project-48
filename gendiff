@@ -2,26 +2,21 @@
 <?php
 
 $doc = <<<DOC
-Naval Fate.
+Generate diff.
 
 Usage:
-  naval_fate.php ship new <name>...
-  naval_fate.php ship <name> move <x> <y> [--speed=<kn>]
-  naval_fate.php ship shoot <x> <y>
-  naval_fate.php mine (set|remove) <x> <y> [--moored | --drifting]
-  naval_fate.php (-h | --help)
-  naval_fate.php --version
+  gendiff (-h|--help)
+  gendiff (-v|--version)
+  gendiff [--format <fmt>] <firstFile> <secondFile>
 
 Options:
-  -h --help     Show this screen.
-  --version     Show version.
-  --speed=<kn>  Speed in knots [default: 10].
-  --moored      Moored (anchored) mine.
-  --drifting    Drifting mine.
+  -h --help            Show this screen.
+  -v --version         Show version.
+  --format <fmt>       Report format [default: stylish]
 
 DOC;
 
- require_once __DIR__ . '/vendor/docopt/docopt/src/docopt.php';
+require_once __DIR__ . '/vendor/docopt/docopt/src/docopt.php';
 
 use Docopt\Docopt;
 
