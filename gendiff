@@ -1,36 +1,30 @@
 #!/usr/bin/env php
 <?php
 
-require __DIR__ . '/vendor/autoload.php';
+$doc = <<<DOC
+Naval Fate.
+
+Usage:
+  naval_fate.php ship new <name>...
+  naval_fate.php ship <name> move <x> <y> [--speed=<kn>]
+  naval_fate.php ship shoot <x> <y>
+  naval_fate.php mine (set|remove) <x> <y> [--moored | --drifting]
+  naval_fate.php (-h | --help)
+  naval_fate.php --version
+
+Options:
+  -h --help     Show this screen.
+  --version     Show version.
+  --speed=<kn>  Speed in knots [default: 10].
+  --moored      Moored (anchored) mine.
+  --drifting    Drifting mine.
+
+DOC;
+
+ require_once __DIR__ . '/vendor/docopt/docopt/src/docopt.php';
 
 use Docopt\Docopt;
 
-$usage = <<<DOC
-Generate diff
-
-Usage:
-  gendiff (-h|--help)
-  gendiff (-v|--version)
-
-Options:
-  -h --help                     Show this screen
-  -v --version                  Show version
-DOC;
-
-try {
-    $arguments = new Docopt($usage, ['version' => 'Gendiff 0.1']);
-    $args = $arguments->handle(array_slice($_SERVER['argv'], 1));
-
-    if ($args['--help']) {
-        echo $usage . "\n";
-        exit(0);
-    }
-
-    if ($args['--version']) {
-        echo "Gendiff 0.1\n";
-        exit(0);
-    }
-
-} catch (\Docopt\ExitException $e) {
-    echo $e->getMessage();
-}
+$args = \Docopt::handle($doc, array('version'=>'Naval Fate 2.0'));
+foreach ($args as $k=>$v)
+    echo $k.': '.json_encode($v).PHP_EOL;

@@ -2,6 +2,9 @@
     "name": "hexlet/code",
     "type": "project",
     "autoload": {
+        "files": [
+            "src/docopt.php"
+        ],
         "psr-4": {
             "Hexlet\\Code\\": "src/"
         }
