@@ -4,6 +4,15 @@ namespace Differ\Differ;
 
 use function Parse\parseJson;
 
+function formatValue($value)
+{
+    if (is_string($value)) {
+        return $value;
+    } else {
+        return json_encode($value);
+    }
+}
+
 function genDiff($pathToFile1, $pathToFile2)
 {
     $file1 = parseJson($pathToFile1);
@@ -11,25 +20,24 @@ function genDiff($pathToFile1, $pathToFile2)
     $result = [];
 
     foreach ($file1 as $key => $value) {
-        if (array_key_exists($key, $file2)) {
-            if($file2[$key] == $value) {
-                $result[] = "{$key}: {$value}";
+        if (isset($file2->$key)) {
+            if($file2->$key === $value) {
+                $result[] = "  {$key}: " . formatValue($value);
             } else {
-                $result[] = "- {$key}: {$value}";
-                $result[] = "+ {$key}: {$file2[$key]}";
+                $result[] = "- {$key}: " . formatValue($value);
+                $result[] = "+ {$key}: " . formatValue($file2->$key);
             }
         } else {
-            $result[] = "- {$key}: {$value}";
+            $result[] = "- {$key}: " . formatValue($value);
         }
     }
 
     foreach ($file2 as $key => $value) {
-        if(!array_key_exists($key, $result)) {
-            $result[] = "+ {$key}: {$value}";
+        if (!isset($file1->$key)) {
+            $result[] = "+ {$key}: " . formatValue($value);
         }
     }
 
     return implode("\n", $result);
 }
 
-var_dump(genDiff("../file1.json", "../file2.json"));

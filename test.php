@@ -2,14 +2,11 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Parse\parseJson;
+use function Differ\Differ\genDiff;
 
-echo "Composer работает!\n";
+$file1 = './file1.json';
+$file2 = './file2.json';
 
-// Если есть функция parseJson, то вызовем её (с неправильным аргументом, чтобы не ругалась)
-if (function_exists('Parse\parseJson')) {
-    echo "Функция parseJson найдена!\n";
-    // parseJson(); //  Закомментируй эту строку, чтобы не было ошибки
-} else {
-    echo "Функция parseJson НЕ найдена!\n";
-}
+$diff = genDiff($file1, $file2);
+
+echo $diff . PHP_EOL;

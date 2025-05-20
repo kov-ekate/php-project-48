@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+use function Differ\Differ\genDiff;
+
 $doc = <<<DOC
 Generate diff.
 
@@ -20,5 +22,11 @@ DOC;
 require __DIR__ . '/../vendor/autoload.php';
 
 $args = \Docopt::handle($doc, array('version'=>'Naval Fate 2.0'));
-foreach ($args as $k=>$v)
-    echo $k.': '.json_encode($v).PHP_EOL;
+
+$pathToFile1 = $args['<pathToFile1>'];
+$pathToFile2 = $args['<pathToFile2>'];
+
+$diff = genDiff($pathToFile1, $pathToFile2);
+echo "{\n";
+echo $diff . "\n";
+echo "}\n";
