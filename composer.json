@@ -1,0 +1,19 @@
+{
+    "name": "hexlet/code",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Hexlet\\Code\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Екатерина Коврижко",
+            "email": "eh1306@yandex.ru"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "docopt/docopt": "^1.0"
+    }
+}
