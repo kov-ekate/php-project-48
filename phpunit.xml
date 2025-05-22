@@ -15,7 +15,6 @@
     <coverage>
         <include>
             <directory suffix=".php">src</directory>
-            <directory suffix=".php">tests</directory>
         </include>
     </coverage>
 </phpunit>
