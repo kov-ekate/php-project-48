@@ -1,16 +1,16 @@
 name: linter
 on: push
 jobs:
-  build:
+  sonarqube:
+    name: SonarQube
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
-      - run: composer install
-      - uses: SonarSource/sonarqube-scan-action@v5.2.0
+        with:
+          fetch-depth: 0
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_PROJECT_KEY: kov-ekate_php-project-48
-          SONAR_ORGANIZATION: kov-ekate
       - run: ./vendor/bin/phpcs --standard=PSR12 src/ tests/
       - run: ./vendor/bin/phpunit
