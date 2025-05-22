@@ -10,5 +10,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_PROJECT_KEY: kov-ekate_php-project-48
+          SONAR_ORGANIZATION: kov-ekate
       - run: ./vendor/bin/phpcs --standard=PSR12 src/ tests/
       - run: ./vendor/bin/phpunit
