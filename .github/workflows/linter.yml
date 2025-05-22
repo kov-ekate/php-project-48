@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: sonarsource/sonarqube-scan@master@v4
+      - uses: sonarsource/sonarqube-scan@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - run: composer install
