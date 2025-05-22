@@ -6,6 +6,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: sonarsource/sonarqube-scan@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - run: composer install
       - run: ./vendor/bin/phpcs --standard=PSR12 src/ tests/
       - run: ./vendor/bin/phpunit
