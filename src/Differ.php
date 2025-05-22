@@ -21,7 +21,7 @@ function genDiff($pathToFile1, $pathToFile2)
 
     foreach ($file1 as $key => $value) {
         if (isset($file2->$key)) {
-            if($file2->$key === $value) {
+            if ($file2->$key === $value) {
                 $result[] = "  {$key}: " . formatValue($value);
             } else {
                 $result[] = "- {$key}: " . formatValue($value);
@@ -40,4 +40,3 @@ function genDiff($pathToFile1, $pathToFile2)
 
     return implode("\n", $result);
 }
-
