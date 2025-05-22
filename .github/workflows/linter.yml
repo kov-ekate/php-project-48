@@ -1,0 +1,10 @@
+name: linter
+on: push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: composer install
+      - run: ./vendor/bin/phpcs --standard=PSR12 src/ tests/
+      - run: ./vendor/bin/phpunit
