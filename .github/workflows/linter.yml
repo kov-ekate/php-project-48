@@ -10,8 +10,7 @@ jobs:
       - uses: SonarSource/sonarqube-scan-action@v5.2.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        args: >
-          -Dsonar.projectKey=kov-ekate_php-project-48
-          -Dsonar.organization=kov-ekate
+          SONAR_PROJECT_KEY: kov-ekate_php-project-48
+          SONAR_ORGANIZATION: kov-ekate
       - run: ./vendor/bin/phpcs --standard=PSR12 src/ tests/
       - run: ./vendor/bin/phpunit
