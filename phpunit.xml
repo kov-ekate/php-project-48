@@ -7,14 +7,9 @@
     displayDetailsOnTestsThatTriggerWarnings="true"
     stopOnWarning="true"
 >
-    <testsuites>
-        <testsuite name="Project Test Suite">
-            <directory>tests</directory>
-        </testsuite>
-    </testsuites>
-    <coverage>
-        <include>
-            <directory suffix=".php">src</directory>
-        </include>
-    </coverage>
+    <source>
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+  </source>
 </phpunit>
