@@ -1,2 +1,6 @@
 /vendor/
 /coverage/
+.phpunit.result.cache
+demo1.cast
+file1.json
+file2.json
