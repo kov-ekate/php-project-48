@@ -5,6 +5,5 @@ namespace Parse;
 function parseJson(string $filePath)
 {
     $file = file_get_contents($filePath);
-    $data = json_decode($file);
-    return $data;
+    return json_decode($file);
 }
