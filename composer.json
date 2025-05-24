@@ -20,7 +20,8 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "docopt/docopt": "^1.0"
+        "docopt/docopt": "^1.0",
+        "symfony/yaml": "^7.2"
     },
     "bin": [
         "bin/gendiff"

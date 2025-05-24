@@ -3,6 +3,7 @@
 namespace Differ\Differ;
 
 use function Parse\parseJson;
+use function Parse\parseYml;
 
 function formatValue($value)
 {
@@ -15,8 +16,23 @@ function formatValue($value)
 
 function genDiff($pathToFile1, $pathToFile2)
 {
-    $file1 = parseJson($pathToFile1);
-    $file2 = parseJson($pathToFile2);
+    $extension1 = pathinfo($pathToFile1, PATHINFO_EXTENSION);
+
+    switch ($extension1) {
+        case 'json':
+            $file1 = parseJson($pathToFile1);
+            $file2 = parseJson($pathToFile2);
+            break;
+        case 'yml':
+            $file1 = parseYml($pathToFile1);
+            $file2 = parseYml($pathToFile2);
+            break;
+        case 'yaml':
+            $file1 = parseYml($pathToFile1);
+            $file2 = parseYml($pathToFile2);
+            break;
+    }
+    
     $result = [];
 
     foreach ($file1 as $key => $value) {
