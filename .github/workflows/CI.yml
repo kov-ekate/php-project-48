@@ -14,6 +14,8 @@ jobs:
           php-version: '8.3.6'
           coverage: xdebug
       - run: make install
+      - name: List files in fixtures directory
+        run: ls -l /home/runner/work/php-project-48/php-project-48/tests/fixtures
       - run: make lint
       - run: make test-coverage
       - name: SonarQube Scan
