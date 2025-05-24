@@ -2,7 +2,3 @@
 /coverage/
 .phpunit.result.cache
 demo1.cast
-file1.json
-file2.json
-file1.yml
-file2.yml
