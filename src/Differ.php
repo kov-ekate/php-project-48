@@ -32,7 +32,7 @@ function genDiff($pathToFile1, $pathToFile2)
             $file2 = parseYml($pathToFile2);
             break;
     }
-    
+
     $result = [];
 
     foreach ($file1 as $key => $value) {
