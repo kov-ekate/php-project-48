@@ -29,14 +29,14 @@ function genArray($file1, $file2)
             $value = $file2[$key];
             if (is_array($value)) {
                 $diff[] = [
-                    "type" => "add", 
-                    "key" => $key, 
+                    "type" => "add",
+                    "key" => $key,
                     "value" => genArray($value, $value)
                 ];
             } else {
                 $diff[] = [
-                    "type" => "add", 
-                    "key" => $key, 
+                    "type" => "add",
+                    "key" => $key,
                     "value" => $value
                 ];
             }
@@ -44,14 +44,14 @@ function genArray($file1, $file2)
             $value = $file1[$key];
             if (is_array($value)) {
                 $diff[] = [
-                    "type" => "delete", 
-                    "key" => $key, 
+                    "type" => "delete",
+                    "key" => $key,
                     "value" => genArray($value, $value)
                 ];
             } else {
                 $diff[] = [
-                    "type" => "delete", 
-                    "key" => $key, 
+                    "type" => "delete",
+                    "key" => $key,
                     "value" => $value
                 ];
             }
@@ -60,43 +60,43 @@ function genArray($file1, $file2)
             $value2 = $file2[$key];
             if (is_array($value1) && is_array($value2)) {
                 $diff[] = [
-                    "type" => "nested", 
-                    "key" => $key, 
+                    "type" => "nested",
+                    "key" => $key,
                     "value" => genArray($value1, $value2)
-            ];
+                ];
             } elseif ($value1 === $value2) {
                 $diff[] = [
-                    "type" => "unchange", 
-                    "key" => $key, 
+                    "type" => "unchange",
+                    "key" => $key,
                     "value" => $value1
                 ];
             } else {
                 if (is_array($value1)) {
                     $diff[] = [
-                        "type" => "change", 
-                        "key" => $key, 
-                        "old value" => genArray($value1, $value1), 
+                        "type" => "change",
+                        "key" => $key,
+                        "old value" => genArray($value1, $value1),
                         "new value" => $value2
                     ];
                 } elseif (is_array($value2)) {
                     $diff[] = [
-                        "type" => "change", 
-                        "key" => $key, 
-                        "new value" => genArray($value2, $value2), 
+                        "type" => "change",
+                        "key" => $key,
+                        "new value" => genArray($value2, $value2),
                         "old value" => $value1
                     ];
                 } else {
-                $diff[] = [
-                    "type" => "change", 
-                    "key" => $key, 
-                    "old value" => $value1, 
-                    "new value" => $value2
-                ];
+                    $diff[] = [
+                        "type" => "change",
+                        "key" => $key,
+                        "old value" => $value1,
+                        "new value" => $value2
+                    ];
                 }
             }
         }
     }
-    return $diff; 
+    return $diff;
 }
 
 function buildDiff($pathToFile1, $pathToFile2)
