@@ -65,11 +65,10 @@ function stylish(array $diff)
                         $lines .= $bracketIndent . "}\n";
                     } else {
                         $lines .= $indent . "- {$item['key']}: " . toString($item['old value']) . "\n";
-                        $lines .= $indent . "+ {$item['key']}: " . toString($item['new value']) . "\n"; 
+                        $lines .= $indent . "+ {$item['key']}: " . toString($item['new value']) . "\n";
                     }
                     break;
             }
-        
         }
         return $lines;
     };
