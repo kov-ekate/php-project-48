@@ -2,6 +2,8 @@
 
 namespace TestPhp;
 require_once 'vendor/autoload.php';
-use function Differ\Differ\genDiff;
 
-var_dump(genDiff('./file1.yaml', './file2.yaml'));
+use function Formatting\Differ\genDiff;
+$diff = genDiff('./file1.yml', './file2.yml');
+$output = print_r($diff, true);
+echo "<pre>" . htmlspecialchars($output) . "</pre>";

@@ -1,8 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-use function Differ\Differ\genDiff;
-
 $doc = <<<DOC
 Generate diff.
 
@@ -21,12 +19,14 @@ DOC;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use function Formatting\Differ\genDiff;
+
 $args = \Docopt::handle($doc, array('version'=>'Naval Fate 2.0'));
 
 $pathToFile1 = $args['<pathToFile1>'];
 $pathToFile2 = $args['<pathToFile2>'];
+$format = $args['--format'];
 
-$diff = genDiff($pathToFile1, $pathToFile2);
-echo "{\n";
-echo $diff . "\n";
-echo "}\n";
+$diff = genDiff($pathToFile1, $pathToFile2, $format);
+echo $diff;
+echo "\n";
