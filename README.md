@@ -3,6 +3,7 @@
 
 https://asciinema.org/a/WYAvqawvg8p7JnmilgjCkkPn5
 https://asciinema.org/a/lquP7MLaIf8zLCId5vmnhfOCH
+https://asciinema.org/a/sA1vUSyprqdPGgdyfWimFFWIX
 
 [![Build Status](https://github.com/kov-ekate/php-project-48/actions/workflows/CI.yml/badge.svg)](https://github.com/kov-ekate/php-project-48/actions/workflows/CI.yml)
 
