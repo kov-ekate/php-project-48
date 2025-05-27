@@ -44,11 +44,14 @@ function plain(array $diff)
                     $oldValue = $item['old value'];
                     $newValue = $item['new value'];
                     if (is_array($oldValue)) {
-                        $lines .= "Property '{$currentKey}' was updated. From [complex value] to " . toString($newValue) . "\n";
+                        $lines .= "Property '{$currentKey}' was updated. ";
+                        $lines .= "From [complex value] to " . toString($newValue) . "\n";
                     } elseif (is_array($newValue)) {
-                        $lines .= "Property '{$currentKey}' was updated. From " . toString($oldValue) . " to [complex value]\n";
+                        $lines .= "Property '{$currentKey}' was updated. ";
+                        $lines .= "From " . toString($oldValue) . " to [complex value]\n";
                     } else {
-                        $lines .= "Property '{$currentKey}' was updated. From " . toString($oldValue) . " to " . toString($newValue) . "\n";
+                        $lines .= "Property '{$currentKey}' was updated. ";
+                        $lines .= "From " . toString($oldValue) . " to " . toString($newValue) . "\n";
                     }
                     break;
             }
