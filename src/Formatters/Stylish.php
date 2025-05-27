@@ -1,6 +1,6 @@
 <?php
 
-namespace Formatting\Stylish;
+namespace Formatters\Stylish;
 
 function toString($value)
 {

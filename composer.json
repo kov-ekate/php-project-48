@@ -6,8 +6,10 @@
             "vendor/docopt/docopt/src/docopt.php",
             "src/Build/Parser.php",
             "src/Build/Builder.php",
-            "src/Formatting/Stylish.php",
-            "src/Formatting/Differ.php"
+            "src/Formatters/Stylish.php",
+            "src/Formatters/Plain.php",
+            "src/Differ.php",
+            "src/Formatters.php"
         ],
         "psr-4": {
             "Hexlet\\Code\\": "src/",

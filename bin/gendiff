@@ -8,7 +8,7 @@ Usage:
   gendiff <pathToFile1> <pathToFile2>
   gendiff (-h|--help)
   gendiff (-v|--version)
-  gendiff [--format <fmt>] <firstFile> <secondFile>
+  gendiff [--format <fmt>] <pathToFile1> <pathToFile2>
 
 Options:
   -h --help            Show this screen.
@@ -19,7 +19,7 @@ DOC;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use function Formatting\Differ\genDiff;
+use function Differ\Differ\genDiff;
 
 $args = \Docopt::handle($doc, array('version'=>'Naval Fate 2.0'));
 
