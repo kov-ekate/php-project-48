@@ -22,6 +22,11 @@ class DifferTest extends TestCase
         $expected2 = file_get_contents(__DIR__ . "/fixtures/result-plain.txt");
 
         $this->assertEquals($expected2, $resultJson2);
+
+        $resultJson3 = genDiff($pathToJsonFile1, $pathToJsonFile2, 'json');
+        $expected3 = file_get_contents(__DIR__ . "/fixtures/result-json.txt");
+
+        $this->assertEquals($expected3, $resultJson3);
     }
 
     public function testYmlGenDiff()
@@ -38,6 +43,11 @@ class DifferTest extends TestCase
         $expected2 = file_get_contents(__DIR__ . "/fixtures/result-plain.txt");
 
         $this->assertEquals($expected2, $resultYml2);
+
+        $resultYml3 = genDiff($pathToYmlFile1, $pathToYmlFile2, 'json');
+        $expected3 = file_get_contents(__DIR__ . "/fixtures/result-json.txt");
+
+        $this->assertEquals($expected3, $resultYml3);
     }
 
     public function testYamlGenDiff()
@@ -54,5 +64,10 @@ class DifferTest extends TestCase
         $expected2 = file_get_contents(__DIR__ . "/fixtures/result-plain.txt");
 
         $this->assertEquals($expected2, $resultYaml2);
+
+        $resultYaml3 = genDiff($pathToYamlFile1, $pathToYamlFile2, 'json');
+        $expected3 = file_get_contents(__DIR__ . "/fixtures/result-json.txt");
+
+        $this->assertEquals($expected3, $resultYaml3);
     }
 }

@@ -4,5 +4,6 @@ namespace TestPhp;
 require_once 'vendor/autoload.php';
 
 use function Differ\Differ\genDiff;
-$diff = genDiff('./file1.yml', './file2.yml', $format = 'plain');
+use function Build\Builder\buildDiff;
+$diff = genDiff('./file1.json', './file2.json', 'plain');
 print_r($diff);

@@ -4,6 +4,9 @@ namespace Formatters\Plain;
 
 function toString($value)
 {
+    if ($value === null) {
+        return 'null';
+    }
     if (!is_string($value)) {
         return trim(var_export($value, true), "'");
     }
@@ -36,7 +39,7 @@ function plain(array $diff)
                     $lines .= "Property '{$currentKey}' was removed\n";
                     break;
                 case 'nested':
-                    $value = $item['value'];
+                    $value = $item['children'];
                     $lines .= $iter($value, $currentKey);
                     break;
                 case 'change':

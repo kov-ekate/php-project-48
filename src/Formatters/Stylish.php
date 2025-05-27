@@ -4,6 +4,9 @@ namespace Formatters\Stylish;
 
 function toString($value)
 {
+    if ($value === null) {
+        return 'null';
+    }
     return trim(var_export($value, true), "'");
 }
 
@@ -46,7 +49,7 @@ function stylish(array $diff)
                     break;
                 case 'nested':
                     $lines .= $indent . "  {$item['key']}: {\n";
-                    $lines .= $iter($item['value'], $depth + 1);
+                    $lines .= $iter($item['children'], $depth + 1);
                     $lines .= $bracketIndent . "}\n";
                     break;
                 case 'unchange':

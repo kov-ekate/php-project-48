@@ -8,6 +8,7 @@
             "src/Build/Builder.php",
             "src/Formatters/Stylish.php",
             "src/Formatters/Plain.php",
+            "src/Formatters/Json.php",
             "src/Differ.php",
             "src/Formatters.php"
         ],

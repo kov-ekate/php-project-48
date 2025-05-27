@@ -5,6 +5,7 @@ https://asciinema.org/a/WYAvqawvg8p7JnmilgjCkkPn5
 https://asciinema.org/a/lquP7MLaIf8zLCId5vmnhfOCH
 https://asciinema.org/a/sA1vUSyprqdPGgdyfWimFFWIX
 https://asciinema.org/a/VPtQFrhp4k37rzWl2ndCwzkSi
+https://asciinema.org/a/IflXD8bNTt5SOMyHyWTkbz19e
 
 [![Build Status](https://github.com/kov-ekate/php-project-48/actions/workflows/CI.yml/badge.svg)](https://github.com/kov-ekate/php-project-48/actions/workflows/CI.yml)
 

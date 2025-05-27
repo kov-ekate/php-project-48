@@ -62,7 +62,7 @@ function genArray($file1, $file2)
                 $diff[] = [
                     "type" => "nested",
                     "key" => $key,
-                    "value" => genArray($value1, $value2)
+                    "children" => genArray($value1, $value2)
                 ];
             } elseif ($value1 === $value2) {
                 $diff[] = [
