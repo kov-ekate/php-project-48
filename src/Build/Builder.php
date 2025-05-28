@@ -5,7 +5,7 @@ namespace Build\Builder;
 use function Build\Parser\parseJson;
 use function Build\Parser\parseYml;
 
-function formatValue($value)
+function formatValue(mixed $value)
 {
     if (is_string($value)) {
         return $value;
@@ -14,7 +14,7 @@ function formatValue($value)
     }
 }
 
-function genArray($file1, $file2)
+function genArray(array $file1, array $file2)
 {
     $keys1 = array_keys((array)$file1);
     $keys2 = array_keys((array)$file2);
@@ -99,7 +99,7 @@ function genArray($file1, $file2)
     return $diff;
 }
 
-function buildDiff($pathToFile1, $pathToFile2)
+function buildDiff(string $pathToFile1, string $pathToFile2)
 {
     $extension1 = pathinfo($pathToFile1, PATHINFO_EXTENSION);
 

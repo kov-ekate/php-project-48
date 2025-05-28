@@ -2,7 +2,7 @@
 
 namespace Formatters\Stylish;
 
-function toString($value)
+function toString(mixed $value)
 {
     if ($value === null) {
         return 'null';

@@ -1,9 +1,2 @@
 /vendor/
 /coverage/
-.phpunit.result.cache
-demo1.cast
- $result1 = $iter($diff, 1);
-    $result2 = rtrim($result1, " \n,");
-    $result3 = rtrim($result2, " \n}");
-    $result4 = rtrim($result3, ",");
-    $result = $result4 . "\n" . "  " . "}\n";

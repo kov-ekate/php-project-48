@@ -2,7 +2,7 @@
 
 namespace Formatters\Json;
 
-function toString($value)
+function toString(mixed $value)
 {
     if ($value === null) {
         return 'null';
