@@ -116,6 +116,8 @@ function buildDiff(string $pathToFile1, string $pathToFile2): array
             $file1 = parseYml($pathToFile1);
             $file2 = parseYml($pathToFile2);
             break;
+        default:
+            return null;
     }
 
     return genArray($file1, $file2);

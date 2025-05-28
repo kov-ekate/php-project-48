@@ -18,6 +18,8 @@ function format(array $diff, string $format): string
         case 'json':
             $result = json($diff);
             break;
+        default:
+            $result = null;
     }
     return $result;
 }
