@@ -2,7 +2,7 @@
 
 namespace Formatters\Plain;
 
-function toString(mixed $value)
+function toString(mixed $value): string
 {
     if ($value === null) {
         return 'null';
@@ -13,7 +13,7 @@ function toString(mixed $value)
     return "'{$value}'";
 }
 
-function plain(array $diff)
+function plain(array $diff): string
 {
 
     $iter = function ($currentValue, $parentKey = '') use (&$iter) {

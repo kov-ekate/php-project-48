@@ -2,7 +2,7 @@
 
 namespace Formatters\Json;
 
-function toString(mixed $value)
+function toString(mixed $value): string
 {
     if ($value === null) {
         return 'null';
@@ -13,7 +13,7 @@ function toString(mixed $value)
     return '"' . $value . '"';
 }
 
-function json(array $diff)
+function json(array $diff): string
 {
     $replacer = ' ';
     $spacesCount = 2;

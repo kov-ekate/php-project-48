@@ -4,13 +4,13 @@ namespace Build\Parser;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parseJson(string $filePath)
+function parseJson(string $filePath): array
 {
     $file = file_get_contents($filePath);
     return json_decode($file, true);
 }
 
-function parseYml(string $filePath)
+function parseYml(string $filePath): array
 {
     $file = Yaml::parseFile($filePath);
     return $file;

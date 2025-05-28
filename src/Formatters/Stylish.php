@@ -2,7 +2,7 @@
 
 namespace Formatters\Stylish;
 
-function toString(mixed $value)
+function toString(mixed $value): string
 {
     if ($value === null) {
         return 'null';
@@ -10,7 +10,7 @@ function toString(mixed $value)
     return trim(var_export($value, true), "'");
 }
 
-function stylish(array $diff)
+function stylish(array $diff): string
 {
     $replacer = ' ';
     $spacesCount = 4;
