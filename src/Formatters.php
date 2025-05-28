@@ -10,13 +10,14 @@ function format(array $diff, string $format): string
 {
     switch ($format) {
         case 'stylish':
-            return stylish($diff);
+            $result = stylish($diff);
             break;
         case 'plain':
-            return plain($diff);
+            $result = plain($diff);
             break;
         case 'json':
-            return json($diff);
+            $result = json($diff);
             break;
     }
+    return $result;
 }

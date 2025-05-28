@@ -2,7 +2,7 @@
 
 namespace Formatters\Plain;
 
-function toString(mixed $value): string
+function toString(mixed $value): string|false
 {
     if ($value === null) {
         return 'null';
