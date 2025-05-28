@@ -4,6 +4,7 @@ namespace Build\Builder;
 
 use function Build\Parser\parseJson;
 use function Build\Parser\parseYml;
+use function Functional\sort;
 
 function formatValue(mixed $value): string|false
 {
@@ -20,9 +21,9 @@ function genArray(array $file1, array $file2): array
     $keys2 = array_keys($file2);
 
     $allKeys = array_unique(array_merge($keys1, $keys2));
-    sort($allKeys);
+    $sortKeys = sort($allKeys, fn ($left, $right) => strcmp($left, $right));
 
-    $diff = array_reduce($allKeys, function ($acc, $key) use ($file1, $file2) {
+    $diff = array_reduce($sortKeys, function ($acc, $key) use ($file1, $file2) {
         if (!array_key_exists($key, $file1)) {
             $value = $file2[$key];
             if (is_array($value)) {
