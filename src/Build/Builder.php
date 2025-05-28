@@ -5,7 +5,7 @@ namespace Build\Builder;
 use function Build\Parser\parseJson;
 use function Build\Parser\parseYml;
 
-function formatValue(mixed $value): string
+function formatValue(mixed $value): string|false
 {
     if (is_string($value)) {
         return $value;
@@ -22,19 +22,17 @@ function genArray(array $file1, array $file2): array
     $allKeys = array_unique(array_merge($keys1, $keys2));
     sort($allKeys);
 
-    $diff = [];
-
-    foreach ($allKeys as $key) {
+    $diff = array_reduce($allKeys, function ($acc, $key) use ($file1, $file2) {
         if (!array_key_exists($key, $file1)) {
             $value = $file2[$key];
             if (is_array($value)) {
-                $diff[] = [
+                $acc[] = [
                     "type" => "add",
                     "key" => $key,
                     "value" => genArray($value, $value)
                 ];
             } else {
-                $diff[] = [
+                $acc[] = [
                     "type" => "add",
                     "key" => $key,
                     "value" => $value
@@ -43,13 +41,13 @@ function genArray(array $file1, array $file2): array
         } elseif (!array_key_exists($key, $file2)) {
             $value = $file1[$key];
             if (is_array($value)) {
-                $diff[] = [
+                $acc[] = [
                     "type" => "delete",
                     "key" => $key,
                     "value" => genArray($value, $value)
                 ];
             } else {
-                $diff[] = [
+                $acc[] = [
                     "type" => "delete",
                     "key" => $key,
                     "value" => $value
@@ -59,34 +57,34 @@ function genArray(array $file1, array $file2): array
             $value1 = $file1[$key];
             $value2 = $file2[$key];
             if (is_array($value1) && is_array($value2)) {
-                $diff[] = [
+                $acc[] = [
                     "type" => "nested",
                     "key" => $key,
                     "children" => genArray($value1, $value2)
                 ];
             } elseif ($value1 === $value2) {
-                $diff[] = [
+                $acc[] = [
                     "type" => "unchange",
                     "key" => $key,
                     "value" => $value1
                 ];
             } else {
                 if (is_array($value1)) {
-                    $diff[] = [
+                    $acc[] = [
                         "type" => "change",
                         "key" => $key,
                         "old value" => genArray($value1, $value1),
                         "new value" => $value2
                     ];
                 } elseif (is_array($value2)) {
-                    $diff[] = [
+                    $acc[] = [
                         "type" => "change",
                         "key" => $key,
                         "new value" => genArray($value2, $value2),
                         "old value" => $value1
                     ];
                 } else {
-                    $diff[] = [
+                    $acc[] = [
                         "type" => "change",
                         "key" => $key,
                         "old value" => $value1,
@@ -95,7 +93,9 @@ function genArray(array $file1, array $file2): array
                 }
             }
         }
-    }
+        return $acc;
+    }, []);
+
     return $diff;
 }
 
