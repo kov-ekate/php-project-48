@@ -27,95 +27,86 @@ function genArray(array $file1, array $file2): array
         if (!array_key_exists($key, $file1)) {
             $value = $file2[$key];
             if (is_array($value)) {
-                $acc = array_merge($acc, [
-                    [
-                        "type" => "add",
-                        "key" => $key,
-                        "value" => genArray($value, $value)
-                    ]
-                ]);
+                $acc[$key] = [
+                    "type" => "add",
+                    "key" => $key,
+                    "value" => genArray($value, $value)
+                ];
             } else {
-                $acc = array_merge($acc, [
-                    [
-                        "type" => "add",
-                        "key" => $key,
-                        "value" => $value
-                    ]
-                ]);
+                $acc[$key] = [
+                    "type" => "add",
+                    "key" => $key,
+                    "value" => $value
+                ];
             }
         } elseif (!array_key_exists($key, $file2)) {
             $value = $file1[$key];
             if (is_array($value)) {
-                $acc = array_merge($acc, [
-                    [
-                        "type" => "delete",
-                        "key" => $key,
-                        "value" => genArray($value, $value)
-                    ]
-                ]);
+                $acc[$key] = [
+                    "type" => "delete",
+                    "key" => $key,
+                    "value" => genArray($value, $value)
+                ];
             } else {
-                $acc = array_merge($acc, [
-                    [
-                        "type" => "delete",
-                        "key" => $key,
-                        "value" => $value
-                    ]
-                ]);
+                $acc[$key] = [
+                    "type" => "delete",
+                    "key" => $key,
+                    "value" => $value
+                ];
             }
         } else {
             $value1 = $file1[$key];
             $value2 = $file2[$key];
             if (is_array($value1) && is_array($value2)) {
-                $acc = array_merge($acc, [
-                    [
-                        "type" => "nested",
-                        "key" => $key,
-                        "children" => genArray($value1, $value2)
-                    ]
-                ]);
+                $acc[$key] = [
+                    "type" => "nested",
+                    "key" => $key,
+                    "children" => genArray($value1, $value2)
+                ];
             } elseif ($value1 === $value2) {
-                $acc = array_merge($acc, [
-                    [
-                        "type" => "unchange",
-                        "key" => $key,
-                        "value" => $value1
-                    ]
-                ]);
+                $acc[$key] = [
+                    "type" => "unchange",
+                    "key" => $key,
+                    "value" => $value1
+                ];
             } else {
                 if (is_array($value1)) {
-                    $acc = array_merge($acc, [
-                        [
-                            "type" => "change",
-                            "key" => $key,
-                            "old value" => genArray($value1, $value1),
-                            "new value" => $value2
-                        ]
-                    ]);
+                    $acc[$key] = [
+                        "type" => "change",
+                        "key" => $key,
+                        "old value" => genArray($value1, $value1),
+                        "new value" => $value2
+                    ];
                 } elseif (is_array($value2)) {
-                    $acc = array_merge($acc, [
-                        [
-                            "type" => "change",
-                            "key" => $key,
-                            "new value" => genArray($value2, $value2),
-                            "old value" => $value1
-                        ]
-                    ]);
+                    $acc[$key] = [
+                        "type" => "change",
+                        "key" => $key,
+                        "new value" => genArray($value2, $value2),
+                        "old value" => $value1
+                    ];
                 } else {
-                    $acc = array_merge($acc, [
-                        [
-                            "type" => "change",
-                            "key" => $key,
-                            "old value" => $value1,
-                            "new value" => $value2
-                        ]
-                    ]);
+                    $acc[$key] = [
+                        "type" => "change",
+                        "key" => $key,
+                        "old value" => $value1,
+                        "new value" => $value2
+                    ];
                 }
             }
         }
         return $acc;
-    }, []);
+    }, $sortKeys);
 
     return $diff;
+}
+
+function removeIndexKeys(array $array): array
+{
+    return array_filter(array_map(function ($item) {
+        return is_array($item) ? removeIndexKeys($item) : $item;
+    }, $array), function ($key) {
+        return is_string($key);
+    }, ARRAY_FILTER_USE_KEY);
 }
 
 function buildDiff(string $pathToFile1, string $pathToFile2): array
@@ -139,5 +130,6 @@ function buildDiff(string $pathToFile1, string $pathToFile2): array
             return [];
     }
 
-    return genArray($file1, $file2);
+    $diff = genArray($file1, $file2);
+    return removeIndexKeys($diff);
 }
