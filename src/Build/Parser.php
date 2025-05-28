@@ -6,7 +6,7 @@ use Symfony\Component\Yaml\Yaml;
 
 function parseJson(string $filePath): array
 {
-    $file = file_get_contents($filePath);
+    $file = (string)file_get_contents($filePath);
     return json_decode($file, true);
 }
 
