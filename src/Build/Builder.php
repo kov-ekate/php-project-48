@@ -103,7 +103,6 @@ function genArray(array $file1, array $file2): array
                 }
             }
         }
-        return $acc;
     }, []);
 
     return $diff;
