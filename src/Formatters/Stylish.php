@@ -31,7 +31,11 @@ function stylish(array $diff): string
                     if (is_array($value)) {
                         $string = $indent . "+ {$item['key']}: {";
                         $result = $iter(($item['value']), $depth + 1);
-                        return [...$acc, $string, ...$result, $bracketIndent . "}"];
+                        if (is_array($result)) {
+                            return [...$acc, $string, ...$result, $bracketIndent . "}"];
+                        } else {
+                            return [...$acc, $string, $result, $bracketIndent . "}"];
+                        }
                     } else {
                         $result = $indent . "+ {$item['key']}: " . toString($item['value']);
                         return [...$acc, $result];
