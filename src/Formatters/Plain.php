@@ -7,6 +7,9 @@ function toString(mixed $value): string
     if ($value === null) {
         return 'null';
     }
+    if (is_array($value)) {
+        return "[complex value]";
+    }
     if (!is_string($value)) {
         return trim(var_export($value, true), "'");
     }
@@ -27,13 +30,8 @@ function plain(array $diff): string
             switch ($item['type']) {
                 case 'add':
                     $value = $item['value'];
-                    if (is_array($value)) {
-                        $result = "Property '{$currentKey}' was added with value: [complex value]";
-                        return [...$acc, $result];
-                    } else {
-                        $result = "Property '{$currentKey}' was added with value: " . toString($value);
-                        return [...$acc, $result];
-                    }
+                    $result = "Property '{$currentKey}' was added with value: " . toString($value);
+                    return [...$acc, $result];
                 case 'delete':
                     $result = "Property '{$currentKey}' was removed";
                     return [...$acc, $result];
@@ -44,22 +42,10 @@ function plain(array $diff): string
                 case 'change':
                     $oldValue = $item['old value'];
                     $newValue = $item['new value'];
-                    if (is_array($oldValue)) {
-                        $string1 = "Property '{$currentKey}' was updated. ";
-                        $string2 = "From [complex value] to " . toString($newValue);
-                        $result = $string1 . $string2;
-                        return [...$acc, $result];
-                    } elseif (is_array($newValue)) {
-                        $string1 = "Property '{$currentKey}' was updated. ";
-                        $string2 = "From " . toString($oldValue) . " to [complex value]";
-                        $result = $string1 . $string2;
-                        return [...$acc, $result];
-                    } else {
-                        $string1 = "Property '{$currentKey}' was updated. ";
-                        $string2 = "From " . toString($oldValue) . " to " . toString($newValue);
-                        $result = $string1 . $string2;
-                        return [...$acc, $result];
-                    }
+                    $string1 = "Property '{$currentKey}' was updated. ";
+                    $string2 = "From " . toString($oldValue) . " to " . toString($newValue);
+                    $result = $string1 . $string2;
+                    return [...$acc, $result];
             }
                 return $acc;
         }, []);

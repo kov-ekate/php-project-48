@@ -19,7 +19,7 @@ function format(array $diff, string $format): string
             $result = json($diff);
             break;
         default:
-            $result = '';
+            $result = null;
     }
     return $result;
 }
