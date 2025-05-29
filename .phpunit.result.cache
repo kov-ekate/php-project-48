@@ -1,1 +1,1 @@
-{"version":1,"defects":{"Tests\\DifferTest::testJsonGenDiff":7,"Tests\\DifferTest::testYmlGenDiff":7,"Tests\\DifferTest::testYamlGenDiff":7},"times":{"Tests\\DifferTest::testJsonGenDiff":0.003,"Tests\\DifferTest::testYmlGenDiff":0.008,"Tests\\DifferTest::testYamlGenDiff":0.004}}
+{"version":1,"defects":{"Tests\\DifferTest::testJsonGenDiff":7,"Tests\\DifferTest::testYmlGenDiff":7,"Tests\\DifferTest::testYamlGenDiff":7},"times":{"Tests\\DifferTest::testJsonGenDiff":0.008,"Tests\\DifferTest::testYmlGenDiff":0.012,"Tests\\DifferTest::testYamlGenDiff":0.005}}

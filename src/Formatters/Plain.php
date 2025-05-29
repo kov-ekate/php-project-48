@@ -42,7 +42,6 @@ function plain(array $diff): string
                     $result = $iter($value, $currentKey);
                     return [...$acc, ...$result];
                 case 'change':
-                    $key = $item['key'];
                     $oldValue = $item['old value'];
                     $newValue = $item['new value'];
                     if (is_array($oldValue)) {
