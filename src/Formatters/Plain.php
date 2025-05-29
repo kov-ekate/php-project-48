@@ -2,7 +2,7 @@
 
 namespace Formatters\Plain;
 
-function toString(mixed $value): string|false
+function toString(mixed $value): string
 {
     if ($value === null) {
         return 'null';
@@ -21,45 +21,55 @@ function plain(array $diff): string
             return toString($currentValue);
         }
 
-        $lines = '';
-
-        foreach ($currentValue as $item) {
+        $plain = array_reduce($currentValue, function ($acc, $item) use ($iter, $parentKey) {
             $key = $item['key'];
             $currentKey = empty($parentKey) ? $key : "{$parentKey}.{$key}";
             switch ($item['type']) {
                 case 'add':
                     $value = $item['value'];
                     if (is_array($value)) {
-                        $lines .= "Property '{$currentKey}' was added with value: [complex value]\n";
+                        $result = "Property '{$currentKey}' was added with value: [complex value]";
+                        return [...$acc, $result];
                     } else {
-                        $lines .= "Property '{$currentKey}' was added with value: " . toString($value) . "\n";
+                        $result = "Property '{$currentKey}' was added with value: " . toString($value);
+                        return [...$acc, $result];
                     }
                     break;
                 case 'delete':
-                    $lines .= "Property '{$currentKey}' was removed\n";
+                    $result = "Property '{$currentKey}' was removed";
+                    return [...$acc, $result];
                     break;
                 case 'nested':
                     $value = $item['children'];
-                    $lines .= $iter($value, $currentKey);
+                    $result = $iter($value, $currentKey);
+                    return [...$acc, ...$result];
                     break;
                 case 'change':
                     $key = $item['key'];
                     $oldValue = $item['old value'];
                     $newValue = $item['new value'];
                     if (is_array($oldValue)) {
-                        $lines .= "Property '{$currentKey}' was updated. ";
-                        $lines .= "From [complex value] to " . toString($newValue) . "\n";
+                        $string1 = "Property '{$currentKey}' was updated. ";
+                        $string2 = "From [complex value] to " . toString($newValue);
+                        $result = $string1 . $string2;
+                        return [...$acc, $result];
                     } elseif (is_array($newValue)) {
-                        $lines .= "Property '{$currentKey}' was updated. ";
-                        $lines .= "From " . toString($oldValue) . " to [complex value]\n";
+                        $string1 = "Property '{$currentKey}' was updated. ";
+                        $string2 = "From " . toString($oldValue) . " to [complex value]";
+                        $result = $string1 . $string2;
+                        return [...$acc, $result];
                     } else {
-                        $lines .= "Property '{$currentKey}' was updated. ";
-                        $lines .= "From " . toString($oldValue) . " to " . toString($newValue) . "\n";
+                        $string1 = "Property '{$currentKey}' was updated. ";
+                        $string2 = "From " . toString($oldValue) . " to " . toString($newValue);
+                        $result = $string1 . $string2;
+                        return [...$acc, $result];
                     }
                     break;
-            }
-        }
-        return $lines;
+                }
+                return $acc;
+        }, []);
+        return $plain;
     };
-    return trim($iter($diff));
+    $res = $iter($diff);
+    return implode("\n", $res);
 }
