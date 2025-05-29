@@ -21,9 +21,7 @@ function stylish(array $diff): string
             return toString($currentValue);
         }
 
-        $lines = '';
-
-        $stylish = array_reduce($currentValue, function ($acc, $item) use ($iter, $depth, $replacer, $spacesCount, $offset) {
+        $callback = function ($acc, $item) use ($iter, $depth, $replacer, $spacesCount, $offset) {
             $indentSize = $depth * $spacesCount - $offset;
             $indent = str_repeat($replacer, $indentSize);
             $bracketIndent = str_repeat($replacer, $spacesCount * $depth);
@@ -41,7 +39,7 @@ function stylish(array $diff): string
                 case 'delete':
                     $value = $item['value'];
                     if (is_array($value)) {
-                        $string = $indent . "- {$item['key']}: {"; 
+                        $string = $indent . "- {$item['key']}: {";
                         $result = $iter(($item['value']), $depth + 1);
                         return [...$acc, $string, ...$result, $bracketIndent . "}"];
                     } else {
@@ -59,13 +57,13 @@ function stylish(array $diff): string
                     $oldValue = $item['old value'];
                     $newValue = $item['new value'];
                     if (is_array($oldValue)) {
-                        $string = $indent . "- {$item['key']}: {"; 
+                        $string = $indent . "- {$item['key']}: {";
                         $result1 = $iter(($item['old value']), $depth + 1);
                         $result2 = $indent . "+ {$item['key']}: " . toString($item['new value']);
                         return [...$acc, $string, ...$result1, $bracketIndent . "}", $result2];
                     } elseif (is_array($newValue)) {
                         $string = $indent . "- {$item['key']}: " . toString($item['old value']);
-                        $result1 = $indent . "+ {$item['key']}: {"; 
+                        $result1 = $indent . "+ {$item['key']}: {";
                         $result2 = $iter(($item['new value']), $depth + 1);
                         return [...$acc, $string, $result1, ...$result2, $bracketIndent . "}"];
                     } else {
@@ -74,7 +72,8 @@ function stylish(array $diff): string
                         return [...$acc, $result1, $result2];
                     }
             }
-        }, []);
+        };
+        $stylish = array_reduce($currentValue, $callback, []);
         return $stylish;
     };
     $res = $iter($diff, 1);
