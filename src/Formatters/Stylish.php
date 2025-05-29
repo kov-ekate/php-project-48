@@ -45,7 +45,11 @@ function stylish(array $diff): string
                     if (is_array($value)) {
                         $string = $indent . "- {$item['key']}: {";
                         $result = $iter(($item['value']), $depth + 1);
-                        return [...$acc, $string, ...$result, $bracketIndent . "}"];
+                        if (is_array($result)) {
+                            return [...$acc, $string, ...$result, $bracketIndent . "}"];
+                        } else {
+                            return [...$acc, $string, $result, $bracketIndent . "}"];
+                        }
                     } else {
                         $result = $indent . "- {$item['key']}: " . toString($item['value']);
                         return [...$acc, $result];
@@ -53,7 +57,11 @@ function stylish(array $diff): string
                 case 'nested':
                     $string = $indent . "  {$item['key']}: {";
                     $result = $iter($item['children'], $depth + 1);
-                    return [...$acc, $string, ...$result, $bracketIndent . "}"];
+                    if (is_array($result)) {
+                        return [...$acc, $string, ...$result, $bracketIndent . "}"];
+                    } else {
+                        return [...$acc, $string, $result, $bracketIndent . "}"];
+                    }
                 case 'unchange':
                     $result = $indent . "  {$item['key']}: " . toString($item['value']);
                     return [...$acc, $result];
@@ -64,12 +72,20 @@ function stylish(array $diff): string
                         $string = $indent . "- {$item['key']}: {";
                         $result1 = $iter(($item['old value']), $depth + 1);
                         $result2 = $indent . "+ {$item['key']}: " . toString($item['new value']);
-                        return [...$acc, $string, ...$result1, $bracketIndent . "}", $result2];
+                        if (is_array($result1)) {
+                            return [...$acc, $string, ...$result1, $bracketIndent . "}", $result2];
+                        } else {
+                            return [...$acc, $string, $result1, $bracketIndent . "}", $result2];
+                        }
                     } elseif (is_array($newValue)) {
                         $string = $indent . "- {$item['key']}: " . toString($item['old value']);
                         $result1 = $indent . "+ {$item['key']}: {";
                         $result2 = $iter(($item['new value']), $depth + 1);
-                        return [...$acc, $string, $result1, ...$result2, $bracketIndent . "}"];
+                        if (is_array($result2)) {
+                            return [...$acc, $string, $result1, ...$result2, $bracketIndent . "}"];
+                        } else {
+                            return [...$acc, $string, $result1, $result2, $bracketIndent . "}"];
+                        }
                     } else {
                         $result1 = $indent . "- {$item['key']}: " . toString($item['old value']);
                         $result2 = $indent . "+ {$item['key']}: " . toString($item['new value']);
