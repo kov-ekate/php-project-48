@@ -65,7 +65,7 @@ function plain(array $diff): string
                         return [...$acc, $result];
                     }
                     break;
-                }
+            }
                 return $acc;
         }, []);
         return $plain;
