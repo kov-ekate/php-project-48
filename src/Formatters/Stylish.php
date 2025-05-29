@@ -18,7 +18,7 @@ function stylish(array $diff): string
 
     $iter = function ($currentValue, $depth) use (&$iter, $replacer, $spacesCount, $offset) {
         if (!is_array($currentValue)) {
-            return toString($currentValue);
+            return [toString($currentValue)];
         }
 
         $callback = function ($acc, $item) use ($iter, $depth, $replacer, $spacesCount, $offset) {
