@@ -23,7 +23,7 @@ function plain(array $diff): string
 
         $plain = array_reduce($currentValue, function ($acc, $item) use ($iter, $parentKey) {
             $key = $item['key'];
-            $currentKey = empty($parentKey) ? $key : "{$parentKey}.{$key}";
+            $currentKey = $parentKey === '' ? $key : "{$parentKey}.{$key}";
             switch ($item['type']) {
                 case 'add':
                     $value = $item['value'];
@@ -34,16 +34,13 @@ function plain(array $diff): string
                         $result = "Property '{$currentKey}' was added with value: " . toString($value);
                         return [...$acc, $result];
                     }
-                    break;
                 case 'delete':
                     $result = "Property '{$currentKey}' was removed";
                     return [...$acc, $result];
-                    break;
                 case 'nested':
                     $value = $item['children'];
                     $result = $iter($value, $currentKey);
                     return [...$acc, ...$result];
-                    break;
                 case 'change':
                     $key = $item['key'];
                     $oldValue = $item['old value'];
@@ -64,7 +61,6 @@ function plain(array $diff): string
                         $result = $string1 . $string2;
                         return [...$acc, $result];
                     }
-                    break;
             }
                 return $acc;
         }, []);
