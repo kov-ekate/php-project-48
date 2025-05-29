@@ -27,86 +27,86 @@ function genArray(array $file1, array $file2): array
         if (!array_key_exists($key, $file1)) {
             $value = $file2[$key];
             if (is_array($value)) {
-                $acc[$key] = [
+                $result = [
                     "type" => "add",
                     "key" => $key,
                     "value" => genArray($value, $value)
                 ];
+                return [...$acc, $result];
             } else {
-                $acc[$key] = [
+                $result = [
                     "type" => "add",
                     "key" => $key,
                     "value" => $value
                 ];
+                return [...$acc, $result];
             }
         } elseif (!array_key_exists($key, $file2)) {
             $value = $file1[$key];
             if (is_array($value)) {
-                $acc[$key] = [
+                $result = [
                     "type" => "delete",
                     "key" => $key,
                     "value" => genArray($value, $value)
                 ];
+                return [...$acc, $result];
             } else {
-                $acc[$key] = [
+                $result = [
                     "type" => "delete",
                     "key" => $key,
                     "value" => $value
                 ];
+                return [...$acc, $result];
             }
         } else {
             $value1 = $file1[$key];
             $value2 = $file2[$key];
             if (is_array($value1) && is_array($value2)) {
-                $acc[$key] = [
+                $result = [
                     "type" => "nested",
                     "key" => $key,
                     "children" => genArray($value1, $value2)
                 ];
+                return [...$acc, $result];
             } elseif ($value1 === $value2) {
-                $acc[$key] = [
+                $result = [
                     "type" => "unchange",
                     "key" => $key,
                     "value" => $value1
                 ];
+                return [...$acc, $result];
             } else {
                 if (is_array($value1)) {
-                    $acc[$key] = [
+                    $result = [
                         "type" => "change",
                         "key" => $key,
                         "old value" => genArray($value1, $value1),
                         "new value" => $value2
                     ];
+                    return [...$acc, $result];
                 } elseif (is_array($value2)) {
-                    $acc[$key] = [
+                    $result = [
                         "type" => "change",
                         "key" => $key,
                         "new value" => genArray($value2, $value2),
                         "old value" => $value1
                     ];
+                    return [...$acc, $result];
                 } else {
-                    $acc[$key] = [
+                    $result = [
                         "type" => "change",
                         "key" => $key,
                         "old value" => $value1,
                         "new value" => $value2
                     ];
+                    return [...$acc, $result];
                 }
             }
         }
         return $acc;
-    }, $sortKeys);
+    }, []);
 
     return $diff;
-}
-
-function removeIndexKeys(array $array): array
-{
-    return array_filter(array_map(function ($item) {
-        return is_array($item) ? removeIndexKeys($item) : $item;
-    }, $array), function ($key) {
-        return is_string($key);
-    }, ARRAY_FILTER_USE_KEY);
 }
 
 function buildDiff(string $pathToFile1, string $pathToFile2): array
@@ -130,6 +130,5 @@ function buildDiff(string $pathToFile1, string $pathToFile2): array
             return [];
     }
 
-    $diff = genArray($file1, $file2);
-    return removeIndexKeys($diff);
+    return genArray($file1, $file2);
 }
