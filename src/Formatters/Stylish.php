@@ -58,23 +58,22 @@ function stylish(array $diff): string
                     $newValue = $item['new value'];
                     if (is_array($oldValue)) {
                         $string = $indent . "- {$item['key']}: {";
-                        $result1 = $iter(($item['old value']), $depth + 1);
-                        $result2 = $indent . "+ {$item['key']}: " . toString($item['new value']);
+                        $result1 = $iter(($oldValue), $depth + 1);
+                        $result2 = $indent . "+ {$item['key']}: " . toString($newValue);
                         return [...$acc, $string, ...$result1, $bracketIndent . "}", $result2];
                     } elseif (is_array($newValue)) {
-                        $string = $indent . "- {$item['key']}: " . toString($item['old value']);
+                        $string = $indent . "- {$item['key']}: " . toString($oldValue);
                         $result1 = $indent . "+ {$item['key']}: {";
-                        $result2 = $iter(($item['new value']), $depth + 1);
+                        $result2 = $iter(($newValue), $depth + 1);
                         return [...$acc, $string, $result1, ...$result2, $bracketIndent . "}"];
                     } else {
-                        $result1 = $indent . "- {$item['key']}: " . toString($item['old value']);
-                        $result2 = $indent . "+ {$item['key']}: " . toString($item['new value']);
+                        $result1 = $indent . "- {$item['key']}: " . toString($oldValue);
+                        $result2 = $indent . "+ {$item['key']}: " . toString($newValue);
                         return [...$acc, $result1, $result2];
                     }
             }
         };
-        $stylish = array_reduce($currentValue, $callback, []);
-        return $stylish;
+        return array_reduce($currentValue, $callback, []);
     };
     $res = $iter($diff, 1);
     $result = implode("\n", $res);

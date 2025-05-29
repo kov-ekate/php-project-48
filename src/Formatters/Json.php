@@ -28,11 +28,12 @@ function json(array $diff): string
         $callback = function ($acc, $item) use ($iter, $depth, $replacer, $spacesCount) {
             $beginIndent = str_repeat($replacer, $depth * $spacesCount);
             $indent = str_repeat($replacer, $depth * $spacesCount + $spacesCount);
+            $key = '"key": ';
             switch ($item['type']) {
                 case 'add':
                     if (is_array($item['value'])) {
                         $result1 = $indent . '"type": "added",';
-                        $result2 = $indent . '"key": ' . toString($item['key']) . ",";
+                        $result2 = $indent . $key . toString($item['key']) . ",";
                         $result3 = $indent . '"value": [';
                         $result4 = $iter(($item['value']), $depth + 2);
                         $count = count($result4);
@@ -53,14 +54,14 @@ function json(array $diff): string
                         ];
                     } else {
                         $result1 = $indent . '"type": "added",';
-                        $result2 = $indent . '"key": ' . toString($item['key']) . ",";
+                        $result2 = $indent . $key . toString($item['key']) . ",";
                         $result3 = $indent . '"value": ' . toString($item['value']);
                         return [...$acc, $beginIndent . "{", $result1, $result2, $result3, $beginIndent . "},"];
                     }
                 case 'delete':
                     if (is_array($item['value'])) {
                         $result1 = $indent . '"type": "deleted",';
-                        $result2 = $indent . '"key": ' . toString($item['key']) . ",";
+                        $result2 = $indent . $key . toString($item['key']) . ",";
                         $result3 = $indent . '"value": [';
                         $result4 = $iter(($item['value']), $depth + 2);
                         $count = count($result4);
@@ -81,13 +82,13 @@ function json(array $diff): string
                         ];
                     } else {
                         $result1 = $indent . '"type": "deleted",';
-                        $result2 = $indent . '"key": ' . toString($item['key']) . ",";
+                        $result2 = $indent . $key . toString($item['key']) . ",";
                         $result3 = $indent . '"value": ' . toString($item['value']);
                         return [...$acc, $beginIndent . "{", $result1, $result2, $result3, $beginIndent . "},"];
                     }
                 case 'nested':
                     $result1 = $indent . '"type": "nested",';
-                    $result2 = $indent . '"key": ' . toString($item['key']) . ",";
+                    $result2 = $indent . $key . toString($item['key']) . ",";
                     $result3 = $indent . '"children": [';
                     $result4 = $iter(($item['children']), $depth + 2);
                     $count = count($result4);
@@ -108,7 +109,7 @@ function json(array $diff): string
                     ];
                 case 'unchange':
                     $result1 = $indent . '"type": "unchanged",';
-                    $result2 = $indent . '"key": ' . toString($item['key']) . ",";
+                    $result2 = $indent . $key . toString($item['key']) . ",";
                     $result3 = $indent . '"value": ' . toString($item['value']);
                     return [...$acc, $beginIndent . "{", $result1, $result2, $result3, $beginIndent . "},"];
                 case 'change':
@@ -116,7 +117,7 @@ function json(array $diff): string
                     $newValue = $item['new value'];
                     if (is_array($oldValue)) {
                         $result1 = $indent . '"type": "changed",';
-                        $result2 = $indent . '"key": ' . toString($item['key']) . ",";
+                        $result2 = $indent . $key . toString($item['key']) . ",";
                         $result3 = $indent . '"old value": [';
                         $result4 = $iter($oldValue, $depth + 2);
                         $count = count($result4);
@@ -139,7 +140,7 @@ function json(array $diff): string
                         ];
                     } elseif (is_array($newValue)) {
                         $result1 = $indent . '"type": "changed",';
-                        $result2 = $indent . '"key": ' . toString($item['key']) . ",";
+                        $result2 = $indent . $key . toString($item['key']) . ",";
                         $result3 = $indent . '"old value": ' . toString($oldValue);
                         $result4 = $indent . '"new value": [';
                         $result5 = $iter($newValue, $depth + 2);
@@ -162,7 +163,7 @@ function json(array $diff): string
                         ];
                     } else {
                         $result1 = $indent . '"type": "changed",';
-                        $result2 = $indent . '"key": ' . toString($item['key']) . ",";
+                        $result2 = $indent . $key . toString($item['key']) . ",";
                         $result3 = $indent . '"old value": ' . toString($oldValue) . ",";
                         $result4 = $indent . '"new value": ' . toString($newValue);
                         return [
@@ -177,8 +178,7 @@ function json(array $diff): string
                     }
             }
         };
-        $json = array_reduce($currentValue, $callback, []);
-        return $json;
+        return array_reduce($currentValue, $callback, []);
     };
     $res = $iter($diff, 1);
     $result = implode("\n", $res);
