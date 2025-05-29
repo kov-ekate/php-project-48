@@ -2,7 +2,7 @@
 
 namespace Formatters\Stylish;
 
-function toString(mixed $value): string|false
+function toString(mixed $value): string
 {
     if ($value === null) {
         return 'null';
@@ -21,59 +21,63 @@ function stylish(array $diff): string
             return toString($currentValue);
         }
 
-        $indentSize = $depth * $spacesCount - $offset;
-        $bracketIndent = str_repeat($replacer, $spacesCount * $depth);
-
         $lines = '';
 
-        foreach ($currentValue as $item) {
+        $stylish = array_reduce($currentValue, function ($acc, $item) use ($iter, $depth, $replacer, $spacesCount, $offset) {
+            $indentSize = $depth * $spacesCount - $offset;
             $indent = str_repeat($replacer, $indentSize);
+            $bracketIndent = str_repeat($replacer, $spacesCount * $depth);
             switch ($item['type']) {
                 case 'add':
                     $value = $item['value'];
                     if (is_array($value)) {
-                        $lines .= $indent . "+ {$item['key']}: {\n" . $iter(($item['value']), $depth + 1);
-                        $lines .= $bracketIndent . "}\n";
+                        $string = $indent . "+ {$item['key']}: {";
+                        $result = $iter(($item['value']), $depth + 1);
+                        return [...$acc, $string, ...$result, $bracketIndent . "}"];
                     } else {
-                        $lines .= $indent . "+ {$item['key']}: " . toString($item['value']) . "\n";
+                        $result = $indent . "+ {$item['key']}: " . toString($item['value']);
+                        return [...$acc, $result];
                     }
-                    break;
                 case 'delete':
                     $value = $item['value'];
                     if (is_array($value)) {
-                        $lines .= $indent . "- {$item['key']}: {\n" . $iter(($item['value']), $depth + 1);
-                        $lines .= $bracketIndent . "}\n";
+                        $string = $indent . "- {$item['key']}: {"; 
+                        $result = $iter(($item['value']), $depth + 1);
+                        return [...$acc, $string, ...$result, $bracketIndent . "}"];
                     } else {
-                        $lines .= $indent . "- {$item['key']}: " . toString($item['value']) . "\n";
+                        $result = $indent . "- {$item['key']}: " . toString($item['value']);
+                        return [...$acc, $result];
                     }
-                    break;
                 case 'nested':
-                    $lines .= $indent . "  {$item['key']}: {\n";
-                    $lines .= $iter($item['children'], $depth + 1);
-                    $lines .= $bracketIndent . "}\n";
-                    break;
+                    $string = $indent . "  {$item['key']}: {";
+                    $result = $iter($item['children'], $depth + 1);
+                    return [...$acc, $string, ...$result, $bracketIndent . "}"];
                 case 'unchange':
-                    $lines .= $indent . "  {$item['key']}: " . toString($item['value']) . "\n";
-                    break;
+                    $result = $indent . "  {$item['key']}: " . toString($item['value']);
+                    return [...$acc, $result];
                 case 'change':
                     $oldValue = $item['old value'];
                     $newValue = $item['new value'];
                     if (is_array($oldValue)) {
-                        $lines .= $indent . "- {$item['key']}: {\n" . $iter(($item['old value']), $depth + 1);
-                        $lines .= $bracketIndent . "}\n";
-                        $lines .= $indent . "+ {$item['key']}: " . toString($item['new value']) . "\n";
+                        $string = $indent . "- {$item['key']}: {"; 
+                        $result1 = $iter(($item['old value']), $depth + 1);
+                        $result2 = $indent . "+ {$item['key']}: " . toString($item['new value']);
+                        return [...$acc, $string, ...$result1, $bracketIndent . "}", $result2];
                     } elseif (is_array($newValue)) {
-                        $lines .= $indent . "- {$item['key']}: " . toString($item['old value']) . "\n";
-                        $lines .= $indent . "+ {$item['key']}: {\n" . $iter(($item['new value']), $depth + 1);
-                        $lines .= $bracketIndent . "}\n";
+                        $string = $indent . "- {$item['key']}: " . toString($item['old value']);
+                        $result1 = $indent . "+ {$item['key']}: {"; 
+                        $result2 = $iter(($item['new value']), $depth + 1);
+                        return [...$acc, $string, $result1, ...$result2, $bracketIndent . "}"];
                     } else {
-                        $lines .= $indent . "- {$item['key']}: " . toString($item['old value']) . "\n";
-                        $lines .= $indent . "+ {$item['key']}: " . toString($item['new value']) . "\n";
+                        $result1 = $indent . "- {$item['key']}: " . toString($item['old value']);
+                        $result2 = $indent . "+ {$item['key']}: " . toString($item['new value']);
+                        return [...$acc, $result1, $result2];
                     }
-                    break;
             }
-        }
-        return $lines;
+        }, []);
+        return $stylish;
     };
-    return "{\n" . $iter($diff, 1) . "}";
+    $res = $iter($diff, 1);
+    $result = implode("\n", $res);
+    return "{\n" . $result . "\n}";
 }
