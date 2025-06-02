@@ -5,17 +5,16 @@ namespace Build\Parser;
 use Exception;
 use Symfony\Component\Yaml\Yaml;
 
-function readFile(string $pathToFile): string
+function readFile(string $pathToFile): string | false
 {
     $extension = pathinfo($pathToFile, PATHINFO_EXTENSION);
     if ($extension === 'json') {
-        $result = (string)file_get_contents($pathToFile);
+        return (string)file_get_contents($pathToFile);
     } elseif ($extension === 'yml' || $extension === 'yaml') {
-        $result = file_get_contents($pathToFile);
+        return file_get_contents($pathToFile);
     } else {
         throw new Exception('Invalid file format');
     }
-    return $result;
 }
 
 function parseJson(string $file): array
