@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function Differ\Differ\genDiff;
@@ -14,10 +15,8 @@ class DifferTest extends TestCase
         return $path . $fixtureName;
     }
 
-    /**
-     * @dataProvider genDiffDataProvider
-     */
-    public function testGenDiff($file1, $file2, $format, $result)
+    #[DataProvider('genDiffDataProvider')]
+    public function testGenDiff(string $file1, string $file2, string $format, string $result): void
     {
         $pathToFile1 = $this->getFixturesName($file1);
         $pathToFile2 = $this->getFixturesName($file2);
@@ -27,7 +26,7 @@ class DifferTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function genDiffDataProvider()
+    public static function genDiffDataProvider(): array
     {
         return [
             [
