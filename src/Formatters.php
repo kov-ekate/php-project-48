@@ -2,6 +2,8 @@
 
 namespace Format;
 
+use Exception;
+
 use function Formatters\Stylish\stylish;
 use function Formatters\Plain\plain;
 use function Formatters\Json\json;
@@ -19,7 +21,7 @@ function format(array $diff, string $format): string
             $result = json($diff);
             break;
         default:
-            $result = '';
+            throw new Exception("Unknown format {$format}");
     }
     return $result;
 }

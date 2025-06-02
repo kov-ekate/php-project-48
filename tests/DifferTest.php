@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -13,6 +14,13 @@ class DifferTest extends TestCase
     {
         $path = __DIR__ . "/fixtures/";
         return $path . $fixtureName;
+    }
+
+    public function testGenDiffUnknownFormat(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Unknown format invalid_format');
+        genDiff($this->getFixturesName('file1.json'), $this->getFixturesName('file2.json'), "invalid_format");
     }
 
     #[DataProvider('genDiffDataProvider')]
@@ -82,7 +90,7 @@ class DifferTest extends TestCase
                 'file2.yaml',
                 'json',
                 'result-json.txt'
-            ]
+            ],
         ];
     }
 }
