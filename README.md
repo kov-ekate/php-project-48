@@ -21,7 +21,7 @@ https://asciinema.org/a/VPtQFrhp4k37rzWl2ndCwzkSi
 https://asciinema.org/a/IflXD8bNTt5SOMyHyWTkbz19e
 
 ## Minimum requirements
-* PHP 7.4 or updated
+* PHP 8.3+
 * Composer
 
 ## Installation

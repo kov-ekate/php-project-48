@@ -8,66 +8,82 @@ use function Differ\Differ\genDiff;
 
 class DifferTest extends TestCase
 {
-    public function testJsonGenDiff(): void
+    protected function getFixturesName(string $fixtureName): string
     {
-        $pathToJsonFile1 = __DIR__ . "/fixtures/file1.json";
-        $pathToJsonFile2 = __DIR__ . "/fixtures/file2.json";
-
-        $resultJson1 = genDiff($pathToJsonFile1, $pathToJsonFile2);
-        $expected1 = file_get_contents(__DIR__ . "/fixtures/result-stylish.txt");
-
-        $this->assertEquals($expected1, $resultJson1);
-
-        $resultJson2 = genDiff($pathToJsonFile1, $pathToJsonFile2, 'plain');
-        $expected2 = file_get_contents(__DIR__ . "/fixtures/result-plain.txt");
-
-        $this->assertEquals($expected2, $resultJson2);
-
-        $resultJson3 = genDiff($pathToJsonFile1, $pathToJsonFile2, 'json');
-        $expected3 = file_get_contents(__DIR__ . "/fixtures/result-json.txt");
-
-        $this->assertEquals($expected3, $resultJson3);
+        $path = __DIR__ . "/fixtures/";
+        return $path . $fixtureName;
     }
 
-    public function testYmlGenDiff()
+    /**
+     * @dataProvider genDiffDataProvider
+     */
+    public function testGenDiff($file1, $file2, $format, $result)
     {
-        $pathToYmlFile1 = __DIR__ . "/fixtures/file1.yml";
-        $pathToYmlFile2 = __DIR__ . "/fixtures/file2.yml";
+        $pathToFile1 = $this->getFixturesName($file1);
+        $pathToFile2 = $this->getFixturesName($file2);
 
-        $resultYml1 = genDiff($pathToYmlFile1, $pathToYmlFile2);
-        $expected1 = file_get_contents(__DIR__ . "/fixtures/result-stylish.txt");
-
-        $this->assertEquals($expected1, $resultYml1);
-
-        $resultYml2 = genDiff($pathToYmlFile1, $pathToYmlFile2, 'plain');
-        $expected2 = file_get_contents(__DIR__ . "/fixtures/result-plain.txt");
-
-        $this->assertEquals($expected2, $resultYml2);
-
-        $resultYml3 = genDiff($pathToYmlFile1, $pathToYmlFile2, 'json');
-        $expected3 = file_get_contents(__DIR__ . "/fixtures/result-json.txt");
-
-        $this->assertEquals($expected3, $resultYml3);
+        $expected = file_get_contents($this->getFixturesName($result));
+        $actual = genDiff($pathToFile1, $pathToFile2, $format);
+        $this->assertEquals($expected, $actual);
     }
 
-    public function testYamlGenDiff()
+    public function genDiffDataProvider()
     {
-        $pathToYamlFile1 = __DIR__ . "/fixtures/file1.yaml";
-        $pathToYamlFile2 = __DIR__ . "/fixtures/file2.yaml";
-
-        $resultYaml1 = genDiff($pathToYamlFile1, $pathToYamlFile2);
-        $expected1 = file_get_contents(__DIR__ . "/fixtures/result-stylish.txt");
-
-        $this->assertEquals($expected1, $resultYaml1);
-
-        $resultYaml2 = genDiff($pathToYamlFile1, $pathToYamlFile2, 'plain');
-        $expected2 = file_get_contents(__DIR__ . "/fixtures/result-plain.txt");
-
-        $this->assertEquals($expected2, $resultYaml2);
-
-        $resultYaml3 = genDiff($pathToYamlFile1, $pathToYamlFile2, 'json');
-        $expected3 = file_get_contents(__DIR__ . "/fixtures/result-json.txt");
-
-        $this->assertEquals($expected3, $resultYaml3);
+        return [
+            [
+                'file1.json',
+                'file2.json',
+                'stylish',
+                'result-stylish.txt'
+            ],
+            [
+                'file1.json',
+                'file2.json',
+                'plain',
+                'result-plain.txt'
+            ],
+            [
+                'file1.json',
+                'file2.json',
+                'json',
+                'result-json.txt'
+            ],
+            [
+                'file1.yml',
+                'file2.yml',
+                'stylish',
+                'result-stylish.txt'
+            ],
+            [
+                'file1.yml',
+                'file2.yml',
+                'plain',
+                'result-plain.txt'
+            ],
+            [
+                'file1.yml',
+                'file2.yml',
+                'json',
+                'result-json.txt'
+            ],
+            [
+                'file1.yaml',
+                'file2.yaml',
+                'stylish',
+                'result-stylish.txt'
+            ],
+            [
+                'file1.yaml',
+                'file2.yaml',
+                'plain',
+                'result-plain.txt'
+            ],
+            [
+                'file1.yaml',
+                'file2.yaml',
+                'json',
+                'result-json.txt'
+            ]
+        ];
     }
 }
