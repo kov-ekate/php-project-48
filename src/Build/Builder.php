@@ -7,15 +7,6 @@ use function Build\Parser\parseYml;
 use function Build\Parser\readFile;
 use function Functional\sort;
 
-function formatValue(mixed $value): string|false
-{
-    if (is_string($value)) {
-        return $value;
-    } else {
-        return json_encode($value);
-    }
-}
-
 function genArray(array $file1, array $file2): array
 {
     $keys1 = array_keys($file1);
