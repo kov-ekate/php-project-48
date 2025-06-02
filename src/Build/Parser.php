@@ -5,7 +5,7 @@ namespace Build\Parser;
 use Exception;
 use Symfony\Component\Yaml\Yaml;
 
-function readFile($pathToFile)
+function readFile(string $pathToFile): string
 {
     $extension = pathinfo($pathToFile, PATHINFO_EXTENSION);
     if ($extension === 'json') {
