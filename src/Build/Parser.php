@@ -12,9 +12,8 @@ function readFile(string $pathToFile): string
         return (string)file_get_contents($pathToFile);
     } elseif ($extension === 'yml' || $extension === 'yaml') {
         return file_get_contents($pathToFile);
-    } else {
-        throw new Exception('Invalid file format');
     }
+    throw new Exception('Invalid file format');
 }
 
 function parseJson(string $file): array
