@@ -4,6 +4,7 @@ namespace Build\Builder;
 
 use function Build\Parser\parseJson;
 use function Build\Parser\parseYml;
+use function Build\Parser\readFile;
 use function Functional\sort;
 
 function formatValue(mixed $value): string|false
@@ -114,20 +115,20 @@ function buildDiff(string $pathToFile1, string $pathToFile2): array
 
     switch ($extension1) {
         case 'json':
-            $file1 = parseJson($pathToFile1);
-            $file2 = parseJson($pathToFile2);
+            $parseFile1 = parseJson(readFile($pathToFile1));
+            $parseFile2 = parseJson(readFile($pathToFile2));
             break;
         case 'yml':
-            $file1 = parseYml($pathToFile1);
-            $file2 = parseYml($pathToFile2);
+            $parseFile1 = parseYml(readFile($pathToFile1));
+            $parseFile2 = parseYml(readFile($pathToFile2));
             break;
         case 'yaml':
-            $file1 = parseYml($pathToFile1);
-            $file2 = parseYml($pathToFile2);
+            $parseFile1 = parseYml(readFile($pathToFile1));
+            $parseFile2 = parseYml(readFile($pathToFile2));
             break;
         default:
             return [];
     }
 
-    return genArray($file1, $file2);
+    return genArray($parseFile1, $parseFile2);
 }
