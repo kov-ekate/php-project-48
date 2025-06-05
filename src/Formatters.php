@@ -1,12 +1,12 @@
 <?php
 
-namespace Gendiff\Format;
+namespace Differ\Format;
 
 use Exception;
 
-use function Gendiff\Formatters\Stylish\stylish;
-use function Gendiff\Formatters\Plain\plain;
-use function Gendiff\Formatters\Json\json;
+use function Differ\Formatters\Stylish\stylish;
+use function Differ\Formatters\Plain\plain;
+use function Differ\Formatters\Json\json;
 
 function format(array $diff, string $format): string
 {

@@ -1,12 +1,11 @@
 <?php
 
-namespace GenDiff\Build\Builder;
+namespace Differ\Build\Builder;
 
 use Exception;
 
-use function Gendiff\Build\Parser\parseJson;
-use function Gendiff\Build\Parser\parseYml;
-use function Gendiff\Build\Parser\readFile;
+use function Differ\Build\Parser\parseJson;
+use function Differ\Build\Parser\parseYml;
 use function Functional\sort;
 
 function genArray(array $file1, array $file2): array

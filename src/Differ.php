@@ -1,10 +1,10 @@
 <?php
 
-namespace Gendiff\Differ\Differ;
+namespace Differ\Differ;
 
-use function Gendiff\Build\Builder\buildDiff;
-use function Gendiff\Format\format;
-use function Gendiff\Build\Reader\readFile;
+use function Differ\Build\Builder\buildDiff;
+use function Differ\Format\format;
+use function Differ\Build\Reader\readFile;
 
 function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'stylish'): string
 {

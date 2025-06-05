@@ -19,7 +19,7 @@ DOC;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use function Gendiff\Differ\Differ\genDiff;
+use function Differ\Differ\genDiff;
 
 $args = \Docopt::handle($doc, array('version'=>'Naval Fate 2.0'));
 

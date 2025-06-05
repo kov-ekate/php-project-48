@@ -1,6 +1,6 @@
 <?php
 
-namespace Gendiff\Build\Reader;
+namespace Differ\Build\Reader;
 
 use Exception;
 
