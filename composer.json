@@ -14,8 +14,7 @@
             "src/Formatters.php"
         ],
         "psr-4": {
-            "Hexlet\\Code\\": "src/",
-            "Differ\\Differ\\": "src/"
+            "Hexlet\\Code\\": "src/"
         }
     },
     "authors": [
