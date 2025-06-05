@@ -1,6 +1,6 @@
 <?php
 
-namespace Formatters\Json;
+namespace Gendiff\Formatters\Json;
 
 function toString(mixed $value): string
 {

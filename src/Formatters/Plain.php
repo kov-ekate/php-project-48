@@ -1,6 +1,6 @@
 <?php
 
-namespace Formatters\Plain;
+namespace Gendiff\Formatters\Plain;
 
 function toString(mixed $value): string
 {

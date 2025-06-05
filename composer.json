@@ -6,6 +6,7 @@
             "vendor/docopt/docopt/src/docopt.php",
             "src/Build/Parser.php",
             "src/Build/Builder.php",
+            "src/Build/Reader.php",
             "src/Formatters/Stylish.php",
             "src/Formatters/Plain.php",
             "src/Formatters/Json.php",

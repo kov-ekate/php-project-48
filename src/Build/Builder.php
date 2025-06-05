@@ -1,10 +1,12 @@
 <?php
 
-namespace Build\Builder;
+namespace GenDiff\Build\Builder;
 
-use function Build\Parser\parseJson;
-use function Build\Parser\parseYml;
-use function Build\Parser\readFile;
+use Exception;
+
+use function Gendiff\Build\Parser\parseJson;
+use function Gendiff\Build\Parser\parseYml;
+use function Gendiff\Build\Parser\readFile;
 use function Functional\sort;
 
 function genArray(array $file1, array $file2): array
@@ -100,25 +102,18 @@ function genArray(array $file1, array $file2): array
     return $diff;
 }
 
-function buildDiff(string $pathToFile1, string $pathToFile2): array
+function buildDiff(array $file1, array $file2): array
 {
-    $extension1 = pathinfo($pathToFile1, PATHINFO_EXTENSION);
+    if ($file1[1] === 'json') {
+        $parseFile1 = parseJson($file1[0]);
+    } elseif ($file1[1] === 'yaml') {
+        $parseFile1 = parseYml($file1[0]);
+    }
 
-    switch ($extension1) {
-        case 'json':
-            $parseFile1 = parseJson(readFile($pathToFile1));
-            $parseFile2 = parseJson(readFile($pathToFile2));
-            break;
-        case 'yml':
-            $parseFile1 = parseYml(readFile($pathToFile1));
-            $parseFile2 = parseYml(readFile($pathToFile2));
-            break;
-        case 'yaml':
-            $parseFile1 = parseYml(readFile($pathToFile1));
-            $parseFile2 = parseYml(readFile($pathToFile2));
-            break;
-        default:
-            return [];
+    if ($file2[1] === 'json') {
+        $parseFile2 = parseJson($file2[0]);
+    } elseif ($file2[1] === 'yaml') {
+        $parseFile2 = parseYml($file2[0]);
     }
 
     return genArray($parseFile1, $parseFile2);

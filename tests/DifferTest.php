@@ -6,7 +6,7 @@ use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-use function Differ\Differ\genDiff;
+use function Gendiff\Differ\Differ\genDiff;
 
 class DifferTest extends TestCase
 {

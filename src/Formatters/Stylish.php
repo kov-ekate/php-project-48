@@ -1,6 +1,6 @@
 <?php
 
-namespace Formatters\Stylish;
+namespace Gendiff\Formatters\Stylish;
 
 function toString(mixed $value): string
 {
