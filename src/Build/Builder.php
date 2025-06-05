@@ -107,12 +107,16 @@ function buildDiff(array $file1, array $file2): array
         $parseFile1 = parseJson($file1[0]);
     } elseif ($file1[1] === 'yaml') {
         $parseFile1 = parseYml($file1[0]);
+    } else {
+        throw new Exception('Invalid file format');
     }
 
     if ($file2[1] === 'json') {
         $parseFile2 = parseJson($file2[0]);
     } elseif ($file2[1] === 'yaml') {
         $parseFile2 = parseYml($file2[0]);
+    } else {
+        throw new Exception('Invalid file format');
     }
 
     return genArray($parseFile1, $parseFile2);

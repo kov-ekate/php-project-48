@@ -15,9 +15,5 @@ function readFile(string $pathToFile): array
         throw new Exception('Invalid file format');
     }
 
-    if ($result === false) {
-        throw new Exception("Failed to read file {$pathToFile}");
-    }
-
     return $result;
 }
