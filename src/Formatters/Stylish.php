@@ -24,14 +24,14 @@ function stylish(array $diff): string
         $callback = function ($acc, $item) use ($iter, $depth, $replacer, $spacesCount, $offset) {
             $indentSize = $depth * $spacesCount - $offset;
             $indent = str_repeat($replacer, $indentSize);
-            $bracketIndent = str_repeat($replacer, $spacesCount * $depth);
+            $bracketIndent = str_repeat($replacer, $spacesCount * $depth) . "}";
             switch ($item['type']) {
                 case 'add':
                     $value = $item['value'];
                     if (is_array($value)) {
                         $string = $indent . "+ {$item['key']}: {";
                         $result = $iter(($item['value']), $depth + 1);
-                        return [...$acc, $string, ...$result, $bracketIndent . "}"];
+                        return [...$acc, $string, ...$result, $bracketIndent];
                     } else {
                         $result = $indent . "+ {$item['key']}: " . toString($item['value']);
                         return [...$acc, $result];
@@ -41,7 +41,7 @@ function stylish(array $diff): string
                     if (is_array($value)) {
                         $string = $indent . "- {$item['key']}: {";
                         $result = $iter(($item['value']), $depth + 1);
-                        return [...$acc, $string, ...$result, $bracketIndent . "}"];
+                        return [...$acc, $string, ...$result, $bracketIndent];
                     } else {
                         $result = $indent . "- {$item['key']}: " . toString($item['value']);
                         return [...$acc, $result];
@@ -49,7 +49,7 @@ function stylish(array $diff): string
                 case 'nested':
                     $string = $indent . "  {$item['key']}: {";
                     $result = $iter($item['children'], $depth + 1);
-                    return [...$acc, $string, ...$result, $bracketIndent . "}"];
+                    return [...$acc, $string, ...$result, $bracketIndent];
                 case 'unchange':
                     $result = $indent . "  {$item['key']}: " . toString($item['value']);
                     return [...$acc, $result];
@@ -60,12 +60,12 @@ function stylish(array $diff): string
                         $string = $indent . "- {$item['key']}: {";
                         $result1 = $iter(($oldValue), $depth + 1);
                         $result2 = $indent . "+ {$item['key']}: " . toString($newValue);
-                        return [...$acc, $string, ...$result1, $bracketIndent . "}", $result2];
+                        return [...$acc, $string, ...$result1, $bracketIndent, $result2];
                     } elseif (is_array($newValue)) {
                         $string = $indent . "- {$item['key']}: " . toString($oldValue);
                         $result1 = $indent . "+ {$item['key']}: {";
                         $result2 = $iter(($newValue), $depth + 1);
-                        return [...$acc, $string, $result1, ...$result2, $bracketIndent . "}"];
+                        return [...$acc, $string, $result1, ...$result2, $bracketIndent];
                     } else {
                         $result1 = $indent . "- {$item['key']}: " . toString($oldValue);
                         $result2 = $indent . "+ {$item['key']}: " . toString($newValue);
