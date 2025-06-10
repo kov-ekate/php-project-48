@@ -4,16 +4,12 @@ namespace Differ\Build\Reader;
 
 use Exception;
 
-function readFile(string $pathToFile): array
+function readFile(string $pathToFile): string
 {
-    $extension = pathinfo($pathToFile, PATHINFO_EXTENSION);
-    if ($extension === 'json') {
-        $result = [file_get_contents($pathToFile), 'json'];
-    } elseif ($extension === 'yml' || $extension === 'yaml') {
-        $result = [file_get_contents($pathToFile), 'yaml'];
-    } else {
-        throw new Exception('Invalid file format');
-    }
+    return file_get_contents($pathToFile);
+}
 
-    return $result;
+function getFormat(string $pathToFile): string
+{
+    return pathinfo($pathToFile, PATHINFO_EXTENSION);
 }

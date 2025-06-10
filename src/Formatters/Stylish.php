@@ -25,50 +25,60 @@ function stylish(array $diff): string
             $indentSize = $depth * $spacesCount - $offset;
             $indent = str_repeat($replacer, $indentSize);
             $bracketIndent = str_repeat($replacer, $spacesCount * $depth) . "}";
+            $key = $item['key'];
             switch ($item['type']) {
                 case 'add':
-                    $value = $item['value'];
-                    if (is_array($value)) {
-                        $string = $indent . "+ {$item['key']}: {";
-                        $result = $iter(($item['value']), $depth + 1);
-                        return [...$acc, $string, ...$result, $bracketIndent];
+                    $sign = '+';
+                    if (is_array($item['value'])) {
+                        $string = sprintf('%s%s %s: {', $indent, $sign, $key);
+                        $value = $iter($item['value'], $depth + 1);
+                        return [...$acc, $string, ...$value, $bracketIndent];
                     } else {
-                        $result = $indent . "+ {$item['key']}: " . toString($item['value']);
+                        $value = toString($item['value']);
+                        $result = sprintf('%s%s %s: %s', $indent, $sign, $key, $value);
                         return [...$acc, $result];
                     }
                 case 'delete':
-                    $value = $item['value'];
-                    if (is_array($value)) {
-                        $string = $indent . "- {$item['key']}: {";
-                        $result = $iter(($item['value']), $depth + 1);
-                        return [...$acc, $string, ...$result, $bracketIndent];
+                    $sign = '-';
+                    if (is_array($item['value'])) {
+                        $string = sprintf('%s%s %s: {', $indent, $sign, $key);
+                        $value = $iter($item['value'], $depth + 1);
+                        return [...$acc, $string, ...$value, $bracketIndent];
                     } else {
-                        $result = $indent . "- {$item['key']}: " . toString($item['value']);
+                        $value = toString($item['value']);
+                        $result = sprintf('%s%s %s: %s', $indent, $sign, $key, $value);
                         return [...$acc, $result];
                     }
                 case 'nested':
-                    $string = $indent . "  {$item['key']}: {";
+                    $string = sprintf('%s  %s: {', $indent, $key);
                     $result = $iter($item['children'], $depth + 1);
                     return [...$acc, $string, ...$result, $bracketIndent];
                 case 'unchange':
-                    $result = $indent . "  {$item['key']}: " . toString($item['value']);
+                    $value = toString($item['value']);
+                    $result = sprintf('%s  %s: %s', $indent, $key, $value);
                     return [...$acc, $result];
                 case 'change':
                     $oldValue = $item['old value'];
                     $newValue = $item['new value'];
+                    $sign1 = '-';
+                    $sign2 = '+';
                     if (is_array($oldValue)) {
-                        $string = $indent . "- {$item['key']}: {";
-                        $result1 = $iter(($oldValue), $depth + 1);
-                        $result2 = $indent . "+ {$item['key']}: " . toString($newValue);
-                        return [...$acc, $string, ...$result1, $bracketIndent, $result2];
+                        $value1 = $iter(($oldValue), $depth + 1);
+                        $value2 = toString($newValue);
+                        $string1 = sprintf('%s%s %s: {', $indent, $sign1, $key);
+                        $string2 = sprintf('%s%s %s: %s', $indent, $sign2, $key, $value2);
+                        return [...$acc, $string1, ...$value1, $bracketIndent, $string2];
                     } elseif (is_array($newValue)) {
-                        $string = $indent . "- {$item['key']}: " . toString($oldValue);
-                        $result1 = $indent . "+ {$item['key']}: {";
-                        $result2 = $iter(($newValue), $depth + 1);
-                        return [...$acc, $string, $result1, ...$result2, $bracketIndent];
+                        $value1 = toString($oldValue);
+                        $value2 = $iter(($newValue), $depth + 1);
+                        $string1 = sprintf('%s%s %s: %s', $indent, $sign1, $key, $value1);
+                        $string2 = sprintf('%s%s %s: {', $indent, $sign2, $key);
+                        return [...$acc, $string1, $string2, ...$value2, $bracketIndent];
                     } else {
-                        $result1 = $indent . "- {$item['key']}: " . toString($oldValue);
-                        $result2 = $indent . "+ {$item['key']}: " . toString($newValue);
+                        $value1 = toString($oldValue);
+                        $value2 = toString($newValue);
+                        $result1 = sprintf('%s%s %s: %s', $indent, $sign1, $key, $value1);
+                        $result2 = sprintf('%s%s %s: %s', $indent, $sign2, $key, $value2);
                         return [...$acc, $result1, $result2];
                     }
             }
@@ -76,6 +86,5 @@ function stylish(array $diff): string
         return array_reduce($currentValue, $callback, []);
     };
     $res = $iter($diff, 1);
-    $result = implode("\n", $res);
-    return "{\n" . $result . "\n}";
+    return implode("\n", ['{', ...$res, '}']);
 }

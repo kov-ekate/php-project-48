@@ -29,8 +29,8 @@ function plain(array $diff): string
             $currentKey = $parentKey === '' ? $key : "{$parentKey}.{$key}";
             switch ($item['type']) {
                 case 'add':
-                    $value = $item['value'];
-                    $result = "Property '{$currentKey}' was added with value: " . toString($value);
+                    $value = toString($item['value']);
+                    $result = "Property '{$currentKey}' was added with value: {$value}";
                     return [...$acc, $result];
                 case 'delete':
                     $result = "Property '{$currentKey}' was removed";
@@ -40,12 +40,11 @@ function plain(array $diff): string
                     $result = $iter($value, $currentKey);
                     return [...$acc, ...$result];
                 case 'change':
-                    $oldValue = $item['old value'];
-                    $newValue = $item['new value'];
+                    $oldValue = toString($item['old value']);
+                    $newValue = toString($item['new value']);
                     $string1 = "Property '{$currentKey}' was updated. ";
-                    $string2 = "From " . toString($oldValue) . " to " . toString($newValue);
-                    $result = $string1 . $string2;
-                    return [...$acc, $result];
+                    $string2 = "From {$oldValue} to {$newValue}";
+                    return [...$acc, $string1 . $string2];
             }
                 return $acc;
         }, []);

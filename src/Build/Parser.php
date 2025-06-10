@@ -15,14 +15,21 @@ function parseYml(string $data): array
     return Yaml::parse($data);
 }
 
-function parse(array $data): array
+function parse(string $data, string $format): array
 {
-    if ($data[1] === 'json') {
-        $parseData = parseJson($data[0]);
-    } elseif ($data[1] === 'yaml') {
-        $parseData = parseYml($data[0]);
-    } else {
-        throw new Exception('Invalid file format');
+    switch ($format) {
+        case 'json':
+            $parseData = parseJson($data);
+            break;
+        case 'yml':
+            $parseData = parseYml($data);
+            break;
+        case 'yaml':
+            $parseData = parseYml($data);
+            break;
+        default:
+            throw new Exception('Invalid file format');
     }
+
     return $parseData;
 }
