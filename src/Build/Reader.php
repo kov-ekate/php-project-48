@@ -6,7 +6,11 @@ use Exception;
 
 function readFile(string $pathToFile): string
 {
-    return file_get_contents($pathToFile);
+    $data = file_get_contents($pathToFile);
+    if ($data === false) {
+        throw new Exception("Failed to read file: {$pathToFile}");
+    }
+    return $data;
 }
 
 function getFormat(string $pathToFile): string
