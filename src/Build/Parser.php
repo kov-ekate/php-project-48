@@ -22,8 +22,6 @@ function parse(string $data, string $format): array
             $parseData = parseJson($data);
             break;
         case 'yml':
-            $parseData = parseYml($data);
-            break;
         case 'yaml':
             $parseData = parseYml($data);
             break;

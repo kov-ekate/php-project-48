@@ -13,7 +13,7 @@ function toString(mixed $value): string
     return '"' . $value . '"';
 }
 
-function json(array $diff): string
+function format(array $diff): string
 {
     $replacer = ' ';
     $spacesCount = 2;
@@ -31,7 +31,7 @@ function json(array $diff): string
             $begin = $beginIndent . "{";
             $end = $beginIndent . "},";
             switch ($item['type']) {
-                case 'add':
+                case 'added':
                     $type = '"type": "added",';
                     $typeString = sprintf('%s%s', $indent, $type);
                     $keyString = sprintf('%s%s', $indent, $keyValue);
@@ -68,7 +68,7 @@ function json(array $diff): string
                             $end
                         ];
                     }
-                case 'delete':
+                case 'deleted':
                     $type = '"type": "deleted",';
                     $typeString = sprintf('%s%s', $indent, $type);
                     $keyString = sprintf('%s%s', $indent, $keyValue);
@@ -129,7 +129,7 @@ function json(array $diff): string
                         $valueString2,
                         $end
                     ];
-                case 'unchange':
+                case 'unchanged':
                     $type = '"type": "unchanged",';
                     $typeString = sprintf('%s%s', $indent, $type);
                     $keyString = sprintf('%s%s', $indent, $keyValue);
@@ -143,7 +143,7 @@ function json(array $diff): string
                         $valueString,
                         $end
                     ];
-                case 'change':
+                case 'changed':
                     $oldValue = $item['old value'];
                     $newValue = $item['new value'];
                     $type = '"type": "changed",';

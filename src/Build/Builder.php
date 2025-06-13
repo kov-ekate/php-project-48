@@ -16,7 +16,7 @@ function buildDiff(array $data1, array $data2): array
         if (!array_key_exists($key, $data1)) {
             $value = is_array($data2[$key]) ? buildDiff($data2[$key], $data2[$key]) : $data2[$key];
             $result = [
-                "type" => "add",
+                "type" => "added",
                 "key" => $key,
                 "value" => $value
             ];
@@ -24,7 +24,7 @@ function buildDiff(array $data1, array $data2): array
         } elseif (!array_key_exists($key, $data2)) {
             $value = is_array($data1[$key]) ? buildDiff($data1[$key], $data1[$key]) : $data1[$key];
             $result = [
-                "type" => "delete",
+                "type" => "deleted",
                 "key" => $key,
                 "value" => $value
             ];
@@ -38,7 +38,7 @@ function buildDiff(array $data1, array $data2): array
             return [...$acc, $result];
         } elseif ($data1[$key] === $data2[$key]) {
             $result = [
-                "type" => "unchange",
+                "type" => "unchanged",
                 "key" => $key,
                 "value" => $data1[$key]
             ];
@@ -47,7 +47,7 @@ function buildDiff(array $data1, array $data2): array
             $oldValue = is_array($data1[$key]) ? buildDiff($data1[$key], $data1[$key]) : $data1[$key];
             $newValue = is_array($data2[$key]) ? buildDiff($data2[$key], $data2[$key]) : $data2[$key];
             $result = [
-                "type" => "change",
+                "type" => "changed",
                 "key" => $key,
                 "old value" => $oldValue,
                 "new value" => $newValue

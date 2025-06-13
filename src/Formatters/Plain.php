@@ -16,7 +16,7 @@ function toString(mixed $value): string
     return "'{$value}'";
 }
 
-function plain(array $diff): string
+function format(array $diff): string
 {
 
     $iter = function ($currentValue, $parentKey = '') use (&$iter) {
@@ -28,18 +28,18 @@ function plain(array $diff): string
             $key = $item['key'];
             $currentKey = $parentKey === '' ? $key : "{$parentKey}.{$key}";
             switch ($item['type']) {
-                case 'add':
+                case 'added':
                     $value = toString($item['value']);
                     $result = "Property '{$currentKey}' was added with value: {$value}";
                     return [...$acc, $result];
-                case 'delete':
+                case 'deleted':
                     $result = "Property '{$currentKey}' was removed";
                     return [...$acc, $result];
                 case 'nested':
                     $value = $item['children'];
                     $result = $iter($value, $currentKey);
                     return [...$acc, ...$result];
-                case 'change':
+                case 'changed':
                     $oldValue = toString($item['old value']);
                     $newValue = toString($item['new value']);
                     $string1 = "Property '{$currentKey}' was updated. ";

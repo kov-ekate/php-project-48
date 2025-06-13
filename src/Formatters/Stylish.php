@@ -10,7 +10,7 @@ function toString(mixed $value): string
     return trim(var_export($value, true), "'");
 }
 
-function stylish(array $diff): string
+function format(array $diff): string
 {
     $replacer = ' ';
     $spacesCount = 4;
@@ -27,7 +27,7 @@ function stylish(array $diff): string
             $bracketIndent = str_repeat($replacer, $spacesCount * $depth) . "}";
             $key = $item['key'];
             switch ($item['type']) {
-                case 'add':
+                case 'added':
                     $sign = '+';
                     if (is_array($item['value'])) {
                         $string = sprintf('%s%s %s: {', $indent, $sign, $key);
@@ -38,7 +38,7 @@ function stylish(array $diff): string
                         $result = sprintf('%s%s %s: %s', $indent, $sign, $key, $value);
                         return [...$acc, $result];
                     }
-                case 'delete':
+                case 'deleted':
                     $sign = '-';
                     if (is_array($item['value'])) {
                         $string = sprintf('%s%s %s: {', $indent, $sign, $key);
@@ -53,11 +53,11 @@ function stylish(array $diff): string
                     $string = sprintf('%s  %s: {', $indent, $key);
                     $result = $iter($item['children'], $depth + 1);
                     return [...$acc, $string, ...$result, $bracketIndent];
-                case 'unchange':
+                case 'unchanged':
                     $value = toString($item['value']);
                     $result = sprintf('%s  %s: %s', $indent, $key, $value);
                     return [...$acc, $result];
-                case 'change':
+                case 'changed':
                     $oldValue = $item['old value'];
                     $newValue = $item['new value'];
                     $sign1 = '-';

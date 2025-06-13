@@ -3,7 +3,7 @@
 namespace Differ\Differ;
 
 use function Differ\Build\Builder\buildDiff;
-use function Differ\Format\format;
+use function Differ\Formatters\chooseFormat;
 use function Differ\Build\Reader\readFile;
 use function Differ\Build\Reader\getFormat;
 use function Differ\Build\Parser\parse;
@@ -19,5 +19,5 @@ function genDiff(string $pathToFile1, string $pathToFile2, string $format = 'sty
     $parseFile2 = parse($data2, $format2);
 
     $diff = buildDiff($parseFile1, $parseFile2);
-    return format($diff, $format);
+    return chooseFormat($diff, $format);
 }
